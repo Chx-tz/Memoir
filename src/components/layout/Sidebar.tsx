@@ -15,7 +15,7 @@ interface SidebarContentProps {
 }
 
 function SidebarContent({ onNavigate }: SidebarContentProps) {
-  const { currentPage, setCurrentPage } = useVault();
+  const { currentPage, setCurrentPage, t } = useVault();
 
   return (
     <div className="flex h-full flex-col">
@@ -24,8 +24,8 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
           <ShieldHalf className="h-5 w-5 text-lime" aria-hidden="true" />
         </div>
         <div>
-          <p className="text-sm font-semibold tracking-tight text-ink-primary">ResilienceID</p>
-          <p className="text-xs text-ink-muted">Relief Vault</p>
+          <p className="text-sm font-semibold tracking-tight text-ink-primary">{t.appName}</p>
+          <p className="text-xs text-ink-muted">{t.appSubtitle}</p>
         </div>
       </div>
 
@@ -49,7 +49,7 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
               }`}
             >
               <Icon className="h-4 w-4" aria-hidden="true" />
-              {item.label}
+              {t.nav[item.id] || item.label}
             </button>
           );
         })}
@@ -57,7 +57,7 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
 
       <div className="mx-4 mb-4 rounded-xl border border-graphite-700 bg-graphite-800/60 p-4">
         <div className="flex items-center justify-between">
-          <p className="text-xs text-ink-secondary">Offline Sync</p>
+          <p className="text-xs text-ink-secondary">{t.common.offlineBadge}</p>
           <p className="font-mono text-xs text-lime">100%</p>
         </div>
         <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-graphite-700">

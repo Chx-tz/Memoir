@@ -3,7 +3,7 @@ import { CheckCircle2, Scan, WifiOff, UserCheck } from "lucide-react";
 import { useVault } from "../../context/VaultContext";
 
 export function VerifierMode() {
-  const { documents, pushToast, logActivity } = useVault();
+  const { documents, pushToast, logActivity, t, uiMode } = useVault();
   
   const [selectedDocId, setSelectedDocId] = useState<string>(documents[0]?.id || "doc-relief");
   const [isScanning, setIsScanning] = useState(false);
@@ -41,13 +41,15 @@ export function VerifierMode() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-sm text-ink-primary">Aid Station Verifier Terminal</span>
+              <span className="font-semibold text-sm text-ink-primary">{t.nav.verifier}</span>
               <span className="rounded-full bg-lime px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-graphite-950">
                 100% Offline
               </span>
             </div>
             <p className="text-xs text-ink-secondary mt-0.5">
-              Validates ZK proofs locally against cached public keys of UNHCR, Red Cross, and SDMA. No internet required.
+              {uiMode === "human"
+                ? "Relief officers scan camp passes offline to verify authenticity and ration quotas without internet."
+                : "Validates ECDSA ZK-SNARK claims locally against offline cached issuer public keys (UNHCR/SDMA)."}
             </p>
           </div>
         </div>

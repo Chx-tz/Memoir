@@ -3,6 +3,34 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-g-950: 12 15 14;
+    --color-g-900: 20 24 26;
+    --color-g-850: 25 30 32;
+    --color-g-800: 30 36 39;
+    --color-g-700: 38 45 48;
+    --color-g-600: 51 59 62;
+    --color-g-500: 74 84 87;
+    --color-ink-primary: 239 243 239;
+    --color-ink-secondary: 152 162 157;
+    --color-ink-muted: 94 106 101;
+    --grid-line: rgba(255, 255, 255, 0.03);
+  }
+
+  .light {
+    --color-g-950: 247 249 248;
+    --color-g-900: 255 255 255;
+    --color-g-850: 255 255 255;
+    --color-g-800: 240 244 242;
+    --color-g-700: 224 231 227;
+    --color-g-600: 195 205 200;
+    --color-g-500: 138 150 145;
+    --color-ink-primary: 15 23 20;
+    --color-ink-secondary: 65 77 73;
+    --color-ink-muted: 105 119 114;
+    --grid-line: rgba(0, 0, 0, 0.035);
+  }
+
   * {
     @apply border-graphite-700;
   }
@@ -11,18 +39,22 @@
     color-scheme: dark;
   }
 
+  html.light {
+    color-scheme: light;
+  }
+
   body {
-    @apply bg-graphite-950 text-ink-primary font-sans antialiased;
+    @apply bg-graphite-950 text-ink-primary font-sans antialiased transition-colors duration-200;
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 40px 40px;
     background-position: -1px -1px;
   }
 
   ::selection {
     background-color: rgba(182, 240, 60, 0.25);
-    color: #eff3ef;
+    color: inherit;
   }
 
   :focus-visible {

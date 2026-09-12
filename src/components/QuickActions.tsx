@@ -2,18 +2,18 @@ import { Boxes, Download, Lock, Scan } from "lucide-react";
 import { useVault } from "../context/VaultContext";
 
 export function QuickActions() {
-  const { openIssueModal, setCurrentPage, pushToast, logActivity, lockVault } = useVault();
+  const { openIssueModal, setCurrentPage, pushToast, logActivity, lockVault, t } = useVault();
 
   const actions = [
     {
       id: "issue",
-      label: "Issue Credential",
+      label: t.actions.issuePass,
       icon: Boxes,
       onClick: () => openIssueModal(),
     },
     {
       id: "verifier",
-      label: "Aid Verifier",
+      label: t.actions.aidVerifier,
       icon: Scan,
       onClick: () => {
         setCurrentPage("verifier");
@@ -22,7 +22,7 @@ export function QuickActions() {
     },
     {
       id: "export",
-      label: "Backup Shards",
+      label: t.actions.backupShards,
       icon: Download,
       onClick: () => {
         pushToast("Encrypted Shamir backup exported", "success");
@@ -31,11 +31,11 @@ export function QuickActions() {
     },
     {
       id: "lock",
-      label: "Lock now",
+      label: t.actions.lockNow,
       icon: Lock,
       onClick: lockVault,
     },
-  ] as const;
+  ];
 
   return (
     <div className="rounded-2xl border border-graphite-700 bg-graphite-850 p-5 shadow-vault">

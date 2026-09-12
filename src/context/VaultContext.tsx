@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -16,11 +17,15 @@ import type {
   ActivityEntry,
   ActivityStatus,
   Guardian,
+  Language,
   PageId,
+  ThemeMode,
   ToastMessage,
   ToastVariant,
+  UiMode,
   VaultDocument,
 } from "../types";
+import { getTranslation, type TranslationDictionary } from "../data/translations";
 
 interface VaultContextValue {
   currentPage: PageId;
@@ -28,6 +33,19 @@ interface VaultContextValue {
   isMobileNavOpen: boolean;
   openMobileNav: () => void;
   closeMobileNav: () => void;
+
+  uiMode: UiMode;
+  setUiMode: (mode: UiMode) => void;
+  toggleUiMode: () => void;
+
+  language: Language;
+  setLanguage: (lang: Language) => void;
+
+  theme: ThemeMode;
+  setTheme: (theme: ThemeMode) => void;
+  toggleTheme: () => void;
+
+  t: TranslationDictionary;
 
   isVaultLocked: boolean;
   isDuressMode: boolean;
@@ -80,6 +98,28 @@ let activityCounter = 0;
 export function VaultProvider({ children }: { children: ReactNode }) {
   const [currentPage, setCurrentPage] = useState<PageId>("overview");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
+  const [uiMode, setUiMode] = useState<UiMode>("human");
+  const [language, setLanguage] = useState<Language>("en");
+  const [theme, setTheme] = useState<ThemeMode>("dark");
+
+  useEffect(() => {
+    if (theme === "light") {
+      document.documentElement.classList.add("light");
+    } else {
+      document.documentElement.classList.remove("light");
+    }
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  }, []);
+
+  const toggleUiMode = useCallback(() => {
+    setUiMode((prev) => (prev === "human" ? "auditor" : "human"));
+  }, []);
+
+  const t = useMemo(() => getTranslation(language, uiMode), [language, uiMode]);
   
   const [isVaultLocked, setIsVaultLocked] = useState(true);
   const [isDuressMode, setIsDuressMode] = useState(false);
@@ -273,6 +313,15 @@ export function VaultProvider({ children }: { children: ReactNode }) {
       isMobileNavOpen,
       openMobileNav,
       closeMobileNav,
+      uiMode,
+      setUiMode,
+      toggleUiMode,
+      language,
+      setLanguage,
+      theme,
+      setTheme,
+      toggleTheme,
+      t,
       isVaultLocked,
       isDuressMode,
       unlockVault,
@@ -312,6 +361,12 @@ export function VaultProvider({ children }: { children: ReactNode }) {
       isMobileNavOpen,
       openMobileNav,
       closeMobileNav,
+      uiMode,
+      toggleUiMode,
+      language,
+      theme,
+      toggleTheme,
+      t,
       isVaultLocked,
       isDuressMode,
       unlockVault,

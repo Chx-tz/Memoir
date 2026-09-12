@@ -1,22 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         graphite: {
-          950: "#0C0F0E",
-          900: "#14181A",
-          850: "#191E20",
-          800: "#1E2427",
-          700: "#262D30",
-          600: "#333B3E",
-          500: "#4A5457",
+          950: "rgb(var(--color-g-950) / <alpha-value>)",
+          900: "rgb(var(--color-g-900) / <alpha-value>)",
+          850: "rgb(var(--color-g-850) / <alpha-value>)",
+          800: "rgb(var(--color-g-800) / <alpha-value>)",
+          700: "rgb(var(--color-g-700) / <alpha-value>)",
+          600: "rgb(var(--color-g-600) / <alpha-value>)",
+          500: "rgb(var(--color-g-500) / <alpha-value>)",
         },
         ink: {
-          primary: "#EFF3EF",
-          secondary: "#98A29D",
-          muted: "#5E6A65",
+          primary: "rgb(var(--color-ink-primary) / <alpha-value>)",
+          secondary: "rgb(var(--color-ink-secondary) / <alpha-value>)",
+          muted: "rgb(var(--color-ink-muted) / <alpha-value>)",
         },
         lime: {
           DEFAULT: "#B6F03C",

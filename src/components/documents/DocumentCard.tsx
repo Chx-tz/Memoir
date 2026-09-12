@@ -15,7 +15,7 @@ interface DocumentCardProps {
 }
 
 export function DocumentCard({ document }: DocumentCardProps) {
-  const { openProofModal, openAnchorModal, openIssueModal } = useVault();
+  const { openProofModal, openAnchorModal, openIssueModal, t } = useVault();
   const Icon = typeIcon[document.type] || FileText;
 
   if (document.status === "empty") {
@@ -34,7 +34,7 @@ export function DocumentCard({ document }: DocumentCardProps) {
           className="mt-5 flex items-center justify-center gap-2 rounded-lg border border-graphite-600 py-2 text-sm text-ink-secondary transition-colors duration-200 hover:border-lime/40 hover:text-lime"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
-          Request Issuance
+          {t.common.requestIssuance}
         </button>
       </div>
     );
@@ -59,7 +59,7 @@ export function DocumentCard({ document }: DocumentCardProps) {
                 #{document.anchor.blockNumber.toLocaleString().substring(0, 5)}...
               </button>
             )}
-            <StatusBadge label="Verified" tone="lime" />
+            <StatusBadge label={t.common.verified} tone="lime" />
           </div>
         </div>
         <p className="mt-4 text-sm font-medium text-ink-primary">{document.title}</p>
@@ -78,7 +78,7 @@ export function DocumentCard({ document }: DocumentCardProps) {
             className="flex items-center justify-center gap-1.5 rounded-lg border border-graphite-700 bg-graphite-800/60 py-2 text-xs text-ink-secondary transition-colors duration-200 hover:border-lime/40 hover:text-ink-primary"
           >
             <Link2 className="h-3.5 w-3.5 text-lime" />
-            Anchor Info
+            {t.common.anchorInfo}
           </button>
         ) : (
           <div />
@@ -91,7 +91,7 @@ export function DocumentCard({ document }: DocumentCardProps) {
           }`}
         >
           <QrCode className="h-3.5 w-3.5" aria-hidden="true" />
-          ZK Proof (QR)
+          {t.common.zkpProof}
         </button>
       </div>
     </div>

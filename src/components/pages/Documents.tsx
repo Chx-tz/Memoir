@@ -3,7 +3,7 @@ import { useVault } from "../../context/VaultContext";
 import { DocumentCard } from "../documents/DocumentCard";
 
 export function Documents() {
-  const { documents, documentSearch, setDocumentSearch, openIssueModal } = useVault();
+  const { documents, documentSearch, setDocumentSearch, openIssueModal, t, uiMode } = useVault();
 
   const filteredDocuments = documents.filter((doc) =>
     doc.title.toLowerCase().includes(documentSearch.trim().toLowerCase()),
@@ -13,9 +13,11 @@ export function Documents() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight text-ink-primary">My credentials</h1>
+          <h1 className="text-xl font-semibold tracking-tight text-ink-primary">{t.nav.documents}</h1>
           <p className="mt-1 text-sm text-ink-secondary">
-            Verifiable credentials anchored on-chain. Protected by your DID.
+            {uiMode === "human"
+              ? "Official relief camp records, health passes, and ration allotments."
+              : "W3C Verifiable Credentials anchored on-chain. Protected by your DID."}
           </p>
         </div>
         <button
@@ -24,7 +26,7 @@ export function Documents() {
           className="flex items-center justify-center gap-2 self-start rounded-xl bg-lime px-4 py-2.5 text-sm font-medium text-graphite-950 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] sm:self-auto"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
-          Request Issuance
+          {t.common.requestIssuance}
         </button>
       </div>
 
@@ -37,7 +39,7 @@ export function Documents() {
           type="search"
           value={documentSearch}
           onChange={(event) => setDocumentSearch(event.target.value)}
-          placeholder="Search credentials"
+          placeholder={uiMode === "human" ? "Search your passes..." : "Search credential schemas & claims..."}
           aria-label="Search credentials"
           className="w-full rounded-xl border border-graphite-700 bg-graphite-850 py-2.5 pl-9 pr-3 text-sm text-ink-primary placeholder:text-ink-muted focus:border-lime/40"
         />

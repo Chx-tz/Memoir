@@ -1,9 +1,9 @@
-﻿import { Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import { useState } from "react";
 import { useVault } from "../../context/VaultContext";
 
 export function VaultLockedScreen() {
-  const { unlockVault } = useVault();
+  const { unlockVault, t, uiMode } = useVault();
   const [pin, setPin] = useState("");
 
   const handleKeyPress = (key: string) => {
@@ -26,9 +26,9 @@ export function VaultLockedScreen() {
       <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-amber/30 bg-amber/10">
         <Lock className="h-7 w-7 text-amber" aria-hidden="true" />
       </div>
-      <h1 className="mt-6 text-xl font-semibold text-ink-primary">ResilienceID</h1>
+      <h1 className="mt-6 text-xl font-semibold text-ink-primary">{t.appName}</h1>
       <p className="mt-2 text-sm text-ink-secondary">
-        Enter PIN to access your credentials
+        {uiMode === "human" ? "Enter your 4-digit security PIN" : "Enter Master PIN to decrypt local enclave"}
       </p>
       
       <div className="mt-8 flex gap-3">
@@ -70,7 +70,9 @@ export function VaultLockedScreen() {
         </button>
       </div>
       <p className="mt-12 text-xs text-ink-muted">
-        Demo Note: PIN is 1234. Duress PIN is 9999.
+        {uiMode === "human"
+          ? "Demo PIN: 1234 (Normal) • 9999 (Safety Decoy)"
+          : "SIH Evaluator Specs: Genuine DID PIN: 1234 • Duress (Decoy Vault) PIN: 9999"}
       </p>
     </div>
   );

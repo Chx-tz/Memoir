@@ -1,5 +1,9 @@
 export type PageId = "overview" | "documents" | "recovery" | "verifier" | "activity";
 
+export type UiMode = "human" | "auditor";
+export type Language = "en" | "ml" | "hi";
+export type ThemeMode = "dark" | "light";
+
 export type DocumentType = 
   | "relief-registration" 
   | "health-record" 

@@ -11,6 +11,8 @@ export function SocialRecovery() {
     approveRecoveryGuardian,
     resetRecoverySimulation,
     addGuardian,
+    t,
+    uiMode,
   } = useVault();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -40,10 +42,12 @@ export function SocialRecovery() {
       <section className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-ink-primary">
-            Guardians & Social Recovery
+            {t.nav.recovery}
           </h1>
           <p className="mt-1 text-sm text-ink-secondary">
-            Loss of a phone during displacement should not mean loss of identity. Recover your DID using a 2-of-3 community quorum.
+            {uiMode === "human"
+              ? "Loss of a phone during displacement should not mean loss of identity. Recover your passes with help from 2 trusted guardians."
+              : "Decentralized threshold key recovery (2-of-3 Shamir Shards). Cryptographically restores did:ethr root identity without central authority."}
           </p>
         </div>
         {!isRecoverySimulating && (
@@ -53,7 +57,7 @@ export function SocialRecovery() {
             className="flex items-center justify-center gap-2 rounded-xl bg-lime px-4 py-2.5 text-xs font-semibold text-graphite-950 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             <KeyRound className="h-4 w-4" />
-            Simulate Lost Device Recovery (Step 6)
+            {uiMode === "human" ? "Test Account Recovery" : "Simulate Lost Device Recovery (Step 6)"}
           </button>
         )}
       </section>
@@ -169,7 +173,7 @@ export function SocialRecovery() {
                         onClick={() => approveRecoveryGuardian(guardian.id)}
                         className="rounded-lg border border-amber/40 bg-amber/10 px-3 py-1.5 text-xs font-medium text-amber hover:bg-amber/20 transition-colors"
                       >
-                        Simulate Approval
+                        {t.common.simulateApproval}
                       </button>
                     )
                   ) : (
