@@ -111,7 +111,7 @@ export function VerifierMode() {
             type="button"
             disabled={isScanning}
             onClick={handleSimulateScan}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-lime py-3 text-sm font-semibold text-graphite-950 transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-lime py-3 text-sm font-medium text-graphite-950 shadow-glow transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
           >
             <Scan className="h-4 w-4" />
             {isScanning ? "Verifying..." : "Scan & Verify Proof"}
@@ -194,7 +194,7 @@ export function VerifierMode() {
                 <button
                   type="button"
                   onClick={handleDispenseAid}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-skyblue py-2.5 text-xs font-semibold text-graphite-950 transition-colors hover:bg-skyblue/90"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-skyblue py-2.5 text-sm font-medium text-graphite-950 transition-colors hover:bg-skyblue/90"
                 >
                   <UserCheck className="h-4 w-4" />
                   Authorize Aid Distribution

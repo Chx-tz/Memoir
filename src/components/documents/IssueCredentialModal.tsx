@@ -215,16 +215,16 @@ export function IssueCredentialModal() {
               <button
                 type="button"
                 onClick={closeIssueModal}
-                className="rounded-xl border border-graphite-700 px-4 py-2 text-sm text-ink-secondary hover:text-ink-primary"
+                className="rounded-xl border border-graphite-700 px-4 py-2.5 text-sm font-medium text-ink-secondary hover:text-ink-primary"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-2 rounded-xl bg-lime px-5 py-2 text-sm font-semibold text-graphite-950 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                className="flex items-center gap-2 rounded-xl bg-lime px-5 py-2.5 text-sm font-medium text-graphite-950 shadow-glow transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Sparkles className="h-4 w-4" />
-                Sign & Anchor On-Chain
+                Sign &amp; Anchor On-Chain
               </button>
             </div>
           </form>

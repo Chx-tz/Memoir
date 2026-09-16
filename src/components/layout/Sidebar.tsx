@@ -19,8 +19,8 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-2.5 px-6 pt-7">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-lime/10">
+      <div className="flex items-center gap-3 px-6 pt-7">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-graphite-800 text-lime">
           <ShieldHalf className="h-5 w-5 text-lime" aria-hidden="true" />
         </div>
         <div>
@@ -42,7 +42,7 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
                 onNavigate?.();
               }}
               aria-current={isActive ? "page" : undefined}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors duration-200 ${
+              className={`flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors duration-200 ${
                 isActive
                   ? "bg-lime/10 text-lime"
                   : "text-ink-secondary hover:bg-graphite-800 hover:text-ink-primary"
@@ -67,11 +67,11 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
 
       <div className="flex items-center gap-3 border-t border-graphite-700 px-6 py-4">
         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary">
-          DID
+          AR
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm text-ink-primary">did:ethr:0x4f...</p>
-          <p className="truncate text-xs text-ink-muted">Self-Sovereign ID</p>
+          <p className="truncate text-sm text-ink-primary">Arjun Ravi</p>
+          <p className="truncate text-xs text-ink-muted">did:ethr:0x4f...</p>
         </div>
       </div>
     </div>

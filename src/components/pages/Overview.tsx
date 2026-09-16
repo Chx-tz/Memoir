@@ -1,4 +1,4 @@
-import { FileStack, Sparkles, Users } from "lucide-react";
+import { FileStack, Plus, Sparkles, Users } from "lucide-react";
 import { useVault } from "../../context/VaultContext";
 import { ActivityItem } from "../activity/ActivityItem";
 import { DocumentCard } from "../documents/DocumentCard";
@@ -31,8 +31,9 @@ export function Overview() {
         <button
           type="button"
           onClick={() => openIssueModal()}
-          className="self-start sm:self-auto rounded-xl bg-lime px-4 py-2 text-xs font-semibold text-graphite-950 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          className="flex items-center justify-center gap-2 self-start rounded-xl bg-lime px-4 py-2.5 text-sm font-medium text-graphite-950 shadow-glow transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] sm:self-auto"
         >
+          <Plus className="h-4 w-4" aria-hidden="true" />
           {t.overview.issueBtn}
         </button>
       </section>

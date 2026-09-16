@@ -75,9 +75,9 @@ export function DocumentCard({ document }: DocumentCardProps) {
           <button
             type="button"
             onClick={() => openAnchorModal(document.id)}
-            className="flex items-center justify-center gap-1.5 rounded-lg border border-graphite-700 bg-graphite-800/60 py-2 text-xs text-ink-secondary transition-colors duration-200 hover:border-lime/40 hover:text-ink-primary"
+            className="flex items-center justify-center gap-1.5 rounded-lg border border-graphite-700 bg-graphite-800/60 py-2 text-sm text-ink-secondary transition-colors duration-200 hover:border-lime/40 hover:text-ink-primary"
           >
-            <Link2 className="h-3.5 w-3.5 text-lime" />
+            <Link2 className="h-4 w-4 text-lime" />
             {t.common.anchorInfo}
           </button>
         ) : (
@@ -86,11 +86,11 @@ export function DocumentCard({ document }: DocumentCardProps) {
         <button
           type="button"
           onClick={() => openProofModal(document.id)}
-          className={`flex items-center justify-center gap-1.5 rounded-lg border border-graphite-600 py-2 text-xs text-ink-secondary transition-colors duration-200 hover:border-lime/40 hover:text-lime ${
+          className={`flex items-center justify-center gap-1.5 rounded-lg border border-graphite-600 py-2 text-sm text-ink-secondary transition-colors duration-200 hover:border-lime/40 hover:text-lime ${
             !document.anchor ? "col-span-2" : ""
           }`}
         >
-          <QrCode className="h-3.5 w-3.5" aria-hidden="true" />
+          <QrCode className="h-4 w-4" aria-hidden="true" />
           {t.common.zkpProof}
         </button>
       </div>

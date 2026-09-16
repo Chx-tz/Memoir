@@ -124,7 +124,7 @@ export function AnchorModal() {
             type="button"
             disabled={isVerifying}
             onClick={handleVerify}
-            className="flex items-center gap-2 rounded-xl bg-lime px-4 py-2 text-xs font-semibold text-graphite-950 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-lime px-4 py-2.5 text-sm font-medium text-graphite-950 shadow-glow transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
           >
             {isVerifying ? "Querying Local Ledger..." : "Verify On-Chain Anchor"}
           </button>

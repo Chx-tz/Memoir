@@ -23,7 +23,7 @@ export function Documents() {
         <button
           type="button"
           onClick={() => openIssueModal()}
-          className="flex items-center justify-center gap-2 self-start rounded-xl bg-lime px-4 py-2.5 text-sm font-medium text-graphite-950 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] sm:self-auto"
+          className="flex items-center justify-center gap-2 self-start rounded-xl bg-lime px-4 py-2.5 text-sm font-medium text-graphite-950 shadow-glow transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] sm:self-auto"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           {t.common.requestIssuance}
@@ -55,6 +55,16 @@ export function Documents() {
         <div className="rounded-2xl border border-dashed border-graphite-600 py-16 text-center">
           <p className="text-sm text-ink-secondary">No credentials match "{documentSearch}".</p>
         </div>
+      )}
+
+      {documents.length > 0 && (
+        <button
+          type="button"
+          onClick={() => setDocumentSearch("")}
+          className="text-sm text-ink-secondary underline-offset-4 transition-colors hover:text-lime hover:underline"
+        >
+          View all documents
+        </button>
       )}
     </div>
   );

@@ -54,7 +54,7 @@ export function SocialRecovery() {
           <button
             type="button"
             onClick={startRecoverySimulation}
-            className="flex items-center justify-center gap-2 rounded-xl bg-lime px-4 py-2.5 text-xs font-semibold text-graphite-950 transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="flex items-center justify-center gap-2 rounded-xl bg-lime px-4 py-2.5 text-sm font-medium text-graphite-950 shadow-glow transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             <KeyRound className="h-4 w-4" />
             {uiMode === "human" ? "Test Account Recovery" : "Simulate Lost Device Recovery (Step 6)"}
@@ -255,13 +255,13 @@ export function SocialRecovery() {
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="rounded-xl border border-graphite-700 px-4 py-2 text-ink-secondary"
+                  className="rounded-xl border border-graphite-700 px-4 py-2.5 text-sm font-medium text-ink-secondary hover:text-ink-primary"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-xl bg-lime px-4 py-2 font-semibold text-graphite-950"
+                  className="rounded-xl bg-lime px-4 py-2.5 text-sm font-medium text-graphite-950 shadow-glow transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Confirm &amp; Encrypt Shard
                 </button>

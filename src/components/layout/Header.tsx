@@ -1,11 +1,10 @@
-import { Code2, Globe, HeartHandshake, Lock, Menu, Moon, Scan, ShieldAlert, Sun } from "lucide-react";
+import { Bell, ChevronDown, Code2, Globe, HeartHandshake, Lock, Menu, Moon, ShieldAlert, Sun } from "lucide-react";
 import { useVault } from "../../context/VaultContext";
 import type { Language } from "../../types";
 
 export function Header() {
   const {
     currentPage,
-    setCurrentPage,
     openMobileNav,
     lockVault,
     isDuressMode,
@@ -15,19 +14,14 @@ export function Header() {
     toggleUiMode,
     theme,
     toggleTheme,
+    pushToast,
     t,
   } = useVault();
 
-  const langOptions: { id: Language; label: string; full: string }[] = [
-    { id: "en", label: "EN", full: "English" },
-    { id: "ml", label: "മല", full: "മലയാളം (Malayalam)" },
-    { id: "hi", label: "हिं", full: "हिंदी (Hindi)" },
-  ];
-
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b border-graphite-700 bg-graphite-950/85 px-4 py-3.5 backdrop-blur sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-graphite-700 bg-graphite-950/85 px-4 py-4 backdrop-blur sm:px-6 lg:px-8">
       {/* Left section: mobile hamburger & breadcrumb */}
-      <div className="flex items-center gap-3 min-w-0">
+      <div className="flex items-center gap-3 min-w-0 flex-1">
         <button
           type="button"
           onClick={openMobileNav}
@@ -39,10 +33,10 @@ export function Header() {
 
         <div className="min-w-0 flex items-center gap-2.5">
           <p className="truncate font-mono text-xs text-ink-muted">
-            {t.appName} / <span className="text-ink-secondary font-medium">{t.nav[currentPage] || currentPage}</span>
+            {t.appName} / <span className="text-ink-secondary">{t.nav[currentPage] || currentPage}</span>
           </p>
           {isDuressMode && (
-            <div className="hidden sm:flex items-center gap-1.5 rounded-full border border-amber/30 bg-amber/10 px-2 py-0.5 text-xs font-medium text-amber">
+            <div className="hidden sm:flex items-center gap-1.5 rounded-full border border-amber/30 bg-amber/10 px-2.5 py-0.5 text-xs font-medium text-amber">
               <ShieldAlert className="h-3.5 w-3.5" />
               {t.header.duressActive}
             </div>
@@ -50,28 +44,22 @@ export function Header() {
         </div>
       </div>
 
-      {/* Right section: Language + Human/Auditor + Theme + Actions */}
-      <div className="flex items-center gap-2 sm:gap-2.5">
-        {/* Language Selector */}
-        <div className="flex items-center rounded-lg border border-graphite-700 bg-graphite-900 p-0.5 text-xs">
-          <span className="pl-1.5 pr-1 text-ink-muted hidden sm:inline" title="Select Language">
-            <Globe className="h-3.5 w-3.5" />
-          </span>
-          {langOptions.map((lang) => (
-            <button
-              key={lang.id}
-              type="button"
-              onClick={() => setLanguage(lang.id)}
-              title={lang.full}
-              className={`rounded-md px-2 py-1 text-xs font-medium transition-colors ${
-                language === lang.id
-                  ? "bg-lime text-graphite-950 font-semibold"
-                  : "text-ink-secondary hover:text-ink-primary"
-              }`}
-            >
-              {lang.label}
-            </button>
-          ))}
+      {/* Right section: Language Dropdown + Mode + Theme + Notifications + Lock + Avatar */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Language Dropdown List */}
+        <div className="relative flex items-center">
+          <Globe className="pointer-events-none absolute left-2.5 h-4 w-4 text-ink-muted" aria-hidden="true" />
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value as Language)}
+            aria-label="Select language"
+            className="appearance-none rounded-lg border border-graphite-700 bg-graphite-900 py-2 pl-8 pr-7 text-xs font-medium text-ink-primary transition-colors hover:border-graphite-600 focus:border-lime/40 focus:outline-none cursor-pointer"
+          >
+            <option value="en" className="bg-graphite-900 text-ink-primary">English (EN)</option>
+            <option value="ml" className="bg-graphite-900 text-ink-primary">മലയാളം (ML)</option>
+            <option value="hi" className="bg-graphite-900 text-ink-primary">हिंदी (HI)</option>
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-2 h-3.5 w-3.5 text-ink-muted" aria-hidden="true" />
         </div>
 
         {/* Human vs Auditor Mode Switch */}
@@ -79,7 +67,7 @@ export function Header() {
           type="button"
           onClick={toggleUiMode}
           title={uiMode === "human" ? "Switch to Auditor Mode (Cryptographic Specs)" : "Switch to Human Mode (Empathetic / Plain Language)"}
-          className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors ${
+          className={`hidden sm:flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${
             uiMode === "human"
               ? "border-lime/40 bg-lime/10 text-lime"
               : "border-violet/40 bg-violet/10 text-violet"
@@ -87,12 +75,12 @@ export function Header() {
         >
           {uiMode === "human" ? (
             <>
-              <HeartHandshake className="h-3.5 w-3.5" />
+              <HeartHandshake className="h-4 w-4" />
               <span className="hidden md:inline">{t.header.modeHuman}</span>
             </>
           ) : (
             <>
-              <Code2 className="h-3.5 w-3.5" />
+              <Code2 className="h-4 w-4" />
               <span className="hidden md:inline">{t.header.modeAuditor}</span>
             </>
           )}
@@ -113,28 +101,27 @@ export function Header() {
           )}
         </button>
 
-        {/* Quick Demo Verifier Toggle */}
+        {/* Notifications Bell Button */}
         <button
           type="button"
-          onClick={() => setCurrentPage(currentPage === "verifier" ? "overview" : "verifier")}
-          className={`hidden xl:flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
-            currentPage === "verifier"
-              ? "border-lime/40 bg-lime/10 text-lime"
-              : "border-graphite-700 text-ink-secondary hover:text-ink-primary"
-          }`}
+          onClick={() => pushToast("All cryptographic roots & verifiable claims synced.", "info")}
+          aria-label="View notifications"
+          className="relative rounded-lg border border-graphite-700 p-2 text-ink-secondary transition-colors hover:text-ink-primary"
         >
-          <Scan className="h-3.5 w-3.5" />
-          {currentPage === "verifier" ? t.header.exitVerifier : t.header.demoVerifier}
+          <Bell className="h-4 w-4" aria-hidden="true" />
+          <span
+            className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-amber"
+            aria-hidden="true"
+          />
         </button>
 
         {/* Lock Vault */}
         <button
           type="button"
           onClick={lockVault}
-          title={t.header.lockVault}
-          className="hidden items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs text-ink-secondary transition-colors border-graphite-700 hover:text-ink-primary sm:flex"
+          className="hidden items-center gap-2 rounded-lg border border-graphite-700 px-3 py-2 text-sm text-ink-secondary transition-colors duration-200 hover:text-ink-primary sm:flex"
         >
-          <Lock className="h-3.5 w-3.5" />
+          <Lock className="h-4 w-4" aria-hidden="true" />
           {t.header.lockVault}
         </button>
 
@@ -142,10 +129,15 @@ export function Header() {
           type="button"
           onClick={lockVault}
           aria-label={t.header.lockVault}
-          className="flex items-center justify-center rounded-lg border p-2 sm:hidden border-graphite-700 text-ink-secondary"
+          className="flex items-center justify-center rounded-lg border border-graphite-700 p-2 text-ink-secondary sm:hidden"
         >
-          <Lock className="h-4 w-4" />
+          <Lock className="h-4 w-4" aria-hidden="true" />
         </button>
+
+        {/* Avatar */}
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary">
+          AR
+        </div>
       </div>
     </header>
   );

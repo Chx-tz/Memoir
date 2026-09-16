@@ -14,7 +14,7 @@
     --color-ink-primary: 239 243 239;
     --color-ink-secondary: 152 162 157;
     --color-ink-muted: 94 106 101;
-    --grid-line: rgba(255, 255, 255, 0.03);
+    --grid-line: rgba(255, 255, 255, 0.025);
   }
 
   .light {
