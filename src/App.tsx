@@ -7,6 +7,7 @@ import { Documents } from "./components/pages/Documents";
 import { Overview } from "./components/pages/Overview";
 import { SocialRecovery } from "./components/pages/SocialRecovery";
 import { VerifierMode } from "./components/pages/VerifierMode";
+import { LandingPage } from "./components/pages/LandingPage";
 import { ToastContainer } from "./components/shared/ToastContainer";
 import { GenerateProofModal } from "./components/documents/GenerateProofModal";
 import { AnchorModal } from "./components/documents/AnchorModal";
@@ -20,6 +21,8 @@ function PageContent() {
   }
 
   switch (currentPage) {
+    case "landing":
+      return <LandingPage />;
     case "overview":
       return <Overview />;
     case "documents":
@@ -36,6 +39,17 @@ function PageContent() {
 }
 
 function Shell() {
+  const { currentPage } = useVault();
+
+  if (currentPage === "landing") {
+    return (
+      <div className="min-h-screen bg-graphite-950">
+        <LandingPage />
+        <ToastContainer />
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen bg-graphite-950">
       <DesktopSidebar />

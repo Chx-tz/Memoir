@@ -5,6 +5,7 @@ import type { Language } from "../../types";
 export function Header() {
   const {
     currentPage,
+    setCurrentPage,
     openMobileNav,
     lockVault,
     isDuressMode,
@@ -33,7 +34,15 @@ export function Header() {
 
         <div className="min-w-0 flex items-center gap-2.5">
           <p className="truncate font-mono text-xs text-ink-muted">
-            {t.appName} / <span className="text-ink-secondary">{t.nav[currentPage] || currentPage}</span>
+            <button
+              type="button"
+              onClick={() => setCurrentPage("landing")}
+              className="hover:text-lime hover:underline transition-colors cursor-pointer text-ink-muted"
+              title="Return to Landing Page"
+            >
+              {t.appName}
+            </button>{" "}
+            / <span className="text-ink-secondary">{t.nav[currentPage] || currentPage}</span>
           </p>
           {isDuressMode && (
             <div className="hidden sm:flex items-center gap-1.5 rounded-full border border-amber/30 bg-amber/10 px-2.5 py-0.5 text-xs font-medium text-amber">

@@ -96,7 +96,7 @@ let toastCounter = 0;
 let activityCounter = 0;
 
 export function VaultProvider({ children }: { children: ReactNode }) {
-  const [currentPage, setCurrentPage] = useState<PageId>("overview");
+  const [currentPage, setCurrentPage] = useState<PageId>("landing");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const [uiMode, setUiMode] = useState<UiMode>("human");

@@ -47,6 +47,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
       appName: "ResilienceID",
       appSubtitle: "Relief Pass Wallet",
       nav: {
+        landing: "Home",
         overview: "Overview",
         documents: "My Passes & Cards",
         recovery: "Family & Guardians",
@@ -93,6 +94,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
       appName: "ResilienceID",
       appSubtitle: "W3C SSI Framework",
       nav: {
+        landing: "Home",
         overview: "Overview",
         documents: "Verifiable Credentials",
         recovery: "Threshold Social Recovery",
@@ -141,6 +143,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
       appName: "റെസിലിയൻസ് ഐഡി",
       appSubtitle: "ദുരിതാശ്വാസ കാർഡ് വോൾട്ട്",
       nav: {
+        landing: "ഹോം",
         overview: "അവലോകനം",
         documents: "എന്റെ ക്യാമ്പ് കാർഡുകൾ",
         recovery: "കുടുംബവും സഹായികളും",
@@ -187,6 +190,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
       appName: "ResilienceID (മലയാളം)",
       appSubtitle: "W3C സെൽഫ്-സോവറിൻ ഐഡന്റിറ്റി",
       nav: {
+        landing: "ഹോം",
         overview: "അവലോകനം",
         documents: "പരിശോധിക്കാവുന്ന ക്രെഡൻഷ്യലുകൾ",
         recovery: "ഷാമിർ ത്രെഷോൾഡ് റിക്കവറി",
@@ -235,6 +239,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
       appName: "रेज़िलिएंस आईडी",
       appSubtitle: "आपदा राहत वॉलेट",
       nav: {
+        landing: "होम",
         overview: "अवलोकन",
         documents: "मेरे राहत कार्ड",
         recovery: "अभिभावक और परिवार",
@@ -281,6 +286,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
       appName: "ResilienceID (हिंदी)",
       appSubtitle: "W3C सेल्फ-सॉवरेन पहचान",
       nav: {
+        landing: "होम",
         overview: "अवलोकन",
         documents: "सत्यापनीय क्रेडेंशियल्स",
         recovery: "शमीर सोशल रिकवरी",

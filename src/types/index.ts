@@ -1,4 +1,4 @@
-export type PageId = "overview" | "documents" | "recovery" | "verifier" | "activity";
+export type PageId = "landing" | "overview" | "documents" | "recovery" | "verifier" | "activity";
 
 export type UiMode = "human" | "auditor";
 export type Language = "en" | "ml" | "hi";
