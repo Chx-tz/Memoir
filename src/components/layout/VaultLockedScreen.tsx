@@ -29,7 +29,7 @@ export function VaultLockedScreen() {
       </div>
       <h1 className="mt-6 text-xl font-semibold text-ink-primary">{t.appName}</h1>
       <p className="mt-2 text-sm text-ink-secondary mb-6">
-        {uiMode === "human" ? "Enter your phone number and 4-digit security PIN" : "Enter Phone and PIN to decrypt local enclave"}
+        {uiMode === "human" ? t.auth.lockedDescHuman : t.auth.lockedDescAuditor}
       </p>
 
       <div className="w-full max-w-xs mb-8">
@@ -37,7 +37,7 @@ export function VaultLockedScreen() {
           type="tel"
           value={phone}
           onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
-          placeholder="Phone Number"
+          placeholder={t.auth.phoneLabel}
           className="w-full rounded-lg border border-graphite-700 bg-graphite-800 px-4 py-3 text-ink-primary placeholder:text-graphite-500 focus:border-lime focus:outline-none focus:ring-1 focus:ring-lime text-center"
         />
       </div>
@@ -81,9 +81,7 @@ export function VaultLockedScreen() {
         </button>
       </div>
       <p className="mt-12 text-xs text-ink-muted">
-        {uiMode === "human"
-          ? "Demo PIN: 1234 (Normal) • 9999 (Safety Decoy)"
-          : "SIH Evaluator Specs: Genuine DID PIN: 1234 • Duress (Decoy Vault) PIN: 9999"}
+        {t.auth.demoPinText}
       </p>
     </div>
   );

@@ -3,7 +3,7 @@ import { useVault } from "../../context/VaultContext";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 export function CreateWallet() {
-  const { createWallet, setCurrentPage, pushToast } = useVault();
+  const { createWallet, setCurrentPage, pushToast, t } = useVault();
   const [phone, setPhone] = useState("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
@@ -38,16 +38,16 @@ export function CreateWallet() {
           className="mb-6 flex items-center text-sm text-ink-muted hover:text-ink-primary transition-colors"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to home
+          {t.auth.backHome}
         </button>
         <div className="flex justify-center mb-6">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-lime/30 bg-lime/10">
             <ShieldCheck className="h-7 w-7 text-lime" />
           </div>
         </div>
-        <h2 className="mb-2 text-center text-2xl font-bold">Create Wallet</h2>
+        <h2 className="mb-2 text-center text-2xl font-bold">{t.auth.createWalletTitle}</h2>
         <p className="mb-8 text-center text-sm text-ink-secondary">
-          Enter your phone number and choose a 4-digit security PIN.
+          {t.auth.createWalletDesc}
         </p>
 
         {error && (
@@ -59,7 +59,7 @@ export function CreateWallet() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-ink-secondary mb-1">
-              Phone Number
+              {t.auth.phoneLabel}
             </label>
             <input
               type="tel"
@@ -72,7 +72,7 @@ export function CreateWallet() {
 
           <div>
             <label className="block text-sm font-medium text-ink-secondary mb-1">
-              4-Digit PIN
+              {t.auth.pinLabel}
             </label>
             <input
               type="password"
@@ -88,7 +88,7 @@ export function CreateWallet() {
             type="submit"
             className="w-full mt-4 flex items-center justify-center rounded-xl bg-lime px-4 py-3.5 text-sm font-semibold text-graphite-950 shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
-            Create Secure Wallet
+            {t.auth.createBtn}
           </button>
         </form>
       </div>

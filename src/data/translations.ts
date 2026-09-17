@@ -31,6 +31,17 @@ export interface TranslationDictionary {
     backupShards: string;
     lockNow: string;
   };
+  auth: {
+    createWalletTitle: string;
+    createWalletDesc: string;
+    phoneLabel: string;
+    pinLabel: string;
+    createBtn: string;
+    backHome: string;
+    lockedDescHuman: string;
+    lockedDescAuditor: string;
+    demoPinText: string;
+  };
   common: {
     verified: string;
     offlineBadge: string;
@@ -82,6 +93,17 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         backupShards: "Family Backup",
         lockNow: "Lock Now",
       },
+      auth: {
+        createWalletTitle: "Create Wallet",
+        createWalletDesc: "Enter your phone number and choose a 4-digit security PIN.",
+        phoneLabel: "Phone Number",
+        pinLabel: "4-Digit PIN",
+        createBtn: "Create Secure Wallet",
+        backHome: "Back to home",
+        lockedDescHuman: "Enter your phone number and 4-digit security PIN",
+        lockedDescAuditor: "Enter Phone and PIN to decrypt local enclave",
+        demoPinText: "Demo PIN: 1234 (Normal) \u2022 9999 (Safety Decoy)",
+      },
       common: {
         verified: "Verified & Active",
         offlineBadge: "100% Offline Ready",
@@ -130,6 +152,17 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         backupShards: "Export Shard Backup",
         lockNow: "Revoke Session",
       },
+      auth: {
+        createWalletTitle: "Create Wallet",
+        createWalletDesc: "Enter your phone number and choose a 4-digit security PIN.",
+        phoneLabel: "Phone Number",
+        pinLabel: "4-Digit PIN",
+        createBtn: "Create Secure Wallet",
+        backHome: "Back to home",
+        lockedDescHuman: "Enter your phone number and 4-digit security PIN",
+        lockedDescAuditor: "Enter Phone and PIN to decrypt local enclave",
+        demoPinText: "SIH Evaluator: Genuine DID PIN 1234 \u2022 Duress (Decoy Vault) PIN 9999",
+      },
       common: {
         verified: "Anchor Valid",
         offlineBadge: "Cached Public Keys: 1,420",
@@ -151,7 +184,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "കുടുംബവും സഹായികളും",
         verifier: "റിലീഫ് കൗണ്ടർ സ്കാനർ",
         activity: "സമീപകാല വിവരങ്ങൾ",
-        create_wallet: "Create Wallet",
+        create_wallet: "വാലറ്റ് ഉണ്ടാക്കുക",
       },
       header: {
         duressActive: "സുരക്ഷാ മോഡ് സജീവം",
@@ -180,6 +213,17 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         backupShards: "കുടുംബ ബാക്കപ്പ്",
         lockNow: "ലോക്ക് ചെയ്യുക",
       },
+      auth: {
+        createWalletTitle: "വാലറ്റ് ഉണ്ടാക്കുക",
+        createWalletDesc: "നിങ്ങളുടെ ഫോൺ നമ്പറും 4 അക്ക സുരക്ഷാ പിൻ നൽകുക.",
+        phoneLabel: "ഫോൺ നമ്പർ",
+        pinLabel: "4 അക്ക പിൻ",
+        createBtn: "സുരക്ഷിത വാലറ്റ് ഉണ്ടാക്കുക",
+        backHome: "ഹോമിലേക്ക് മടങ്ങുക",
+        lockedDescHuman: "നിങ്ങളുടെ ഫോൺ നമ്പറും 4 അക്ക സുരക്ഷാ പിൻ നൽകുക",
+        lockedDescAuditor: "പ്രാദേശിക എൻക്ലേവ് ഡീക്രിപ്റ്റ് ചെയ്യാൻ ഫോണും പിൻ നൽകുക",
+        demoPinText: "ഡെമോ പിൻ: 1234 (സാധാരണം) \u2022 9999 (സുരക്ഷാ ഡെക്കോയ്)",
+      },
       common: {
         verified: "സ്ഥിരീകരിച്ചു",
         offlineBadge: "ഓഫ്‌ലൈൻ സജീവം",
@@ -199,7 +243,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "ഷാമിർ ത്രെഷോൾഡ് റിക്കവറി",
         verifier: "ഓഫ്‌ലൈൻ ZK വെരിഫയർ",
         activity: "ക്രിപ്റ്റോഗ്രാഫിക് ഓഡിറ്റ് ലോഗ്",
-        create_wallet: "Create Wallet",
+        create_wallet: "വാലറ്റ് ഉണ്ടാക്കുക",
       },
       header: {
         duressActive: "ഡ്യൂറസ് മോഡ് സജീവം",
@@ -228,6 +272,17 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         backupShards: "കീ ഷാർഡ് ബാക്കപ്പ്",
         lockNow: "സെഷൻ ലോക്ക്",
       },
+      auth: {
+        createWalletTitle: "വാലറ്റ് ഉണ്ടാക്കുക",
+        createWalletDesc: "നിങ്ങളുടെ ഫോൺ നമ്പറും 4 അക്ക സുരക്ഷാ പിൻ നൽകുക.",
+        phoneLabel: "ഫോൺ നമ്പർ",
+        pinLabel: "4 അക്ക പിൻ",
+        createBtn: "സുരക്ഷിത വാലറ്റ് ഉണ്ടാക്കുക",
+        backHome: "ഹോമിലേക്ക് മടങ്ങുക",
+        lockedDescHuman: "നിങ്ങളുടെ ഫോൺ നമ്പറും 4 അക്ക സുരക്ഷാ പിൻ നൽകുക",
+        lockedDescAuditor: "പ്രാദേശിക എൻക്ലേവ് ഡീക്രിപ്റ്റ് ചെയ്യാൻ ഫോണും പിൻ നൽകുക",
+        demoPinText: "SIH Evaluator: Genuine DID PIN 1234 \u2022 Duress (Decoy Vault) PIN 9999",
+      },
       common: {
         verified: "ആങ്കർ സാധുവാണ്",
         offlineBadge: "കാഷെ ചെയ്ത കീകൾ: 1,420",
@@ -249,7 +304,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "अभिभावक और परिवार",
         verifier: "राहत वितरण काउंटर",
         activity: "हाल की गतिविधि",
-        create_wallet: "Create Wallet",
+        create_wallet: "वॉलेट बनाएं",
       },
       header: {
         duressActive: "सुरक्षा शील्ड सक्रिय",
@@ -278,6 +333,17 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         backupShards: "पारिवारिक बैकअप",
         lockNow: "अभी लॉक करें",
       },
+      auth: {
+        createWalletTitle: "वॉलेट बनाएं",
+        createWalletDesc: "अपना फोन नंबर और 4 अंकों का सुरक्षा पिन दर्ज करें।",
+        phoneLabel: "फोन नंबर",
+        pinLabel: "4 अंकों का पिन",
+        createBtn: "सुरक्षित वॉलेट बनाएं",
+        backHome: "होम पर वापस जाएं",
+        lockedDescHuman: "अपना फोन नंबर और 4 अंकों का सुरक्षा पिन दर्ज करें",
+        lockedDescAuditor: "स्थानीय एन्क्लेव को डिक्रिप्ट करने के लिए फोन और पिन दर्ज करें",
+        demoPinText: "डेमो पिन: 1234 (सामान्य) \u2022 9999 (सुरक्षा डिकॉय)",
+      },
       common: {
         verified: "सत्यापित और सक्रिय",
         offlineBadge: "ऑफ़लाइन तैयार",
@@ -297,7 +363,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "शमीर सोशल रिकवरी",
         verifier: "ऑफ़लाइन ZK सत्यापन टर्मिनल",
         activity: "ऑडिट इवेंट लॉग",
-        create_wallet: "Create Wallet",
+        create_wallet: "वॉलेट बनाएं",
       },
       header: {
         duressActive: "ड्यूरेस मोड (नकली वॉलेट)",
@@ -325,6 +391,17 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         aidVerifier: "ZK सत्यापन टर्मिनल",
         backupShards: "कुंजी बैकअप",
         lockNow: "सत्र लॉक करें",
+      },
+      auth: {
+        createWalletTitle: "वॉलेट बनाएं",
+        createWalletDesc: "अपना फोन नंबर और 4 अंकों का सुरक्षा पिन दर्ज करें।",
+        phoneLabel: "फोन नंबर",
+        pinLabel: "4 अंकों का पिन",
+        createBtn: "सुरक्षित वॉलेट बनाएं",
+        backHome: "होम पर वापस जाएं",
+        lockedDescHuman: "अपना फोन नंबर और 4 अंकों का सुरक्षा पिन दर्ज करें",
+        lockedDescAuditor: "स्थानीय एन्क्लेव को डिक्रिप्ट करने के लिए फोन और पिन दर्ज करें",
+        demoPinText: "SIH Evaluator: Genuine DID PIN 1234 \u2022 Duress (Decoy Vault) PIN 9999",
       },
       common: {
         verified: "एंकर मान्य",
