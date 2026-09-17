@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import {
   ArrowRight,
   ArrowUp,
@@ -23,14 +23,7 @@ import {
 } from "lucide-react";
 import { useVault } from "../../context/VaultContext";
 import type { Language } from "../../types";
-
-const ROTATING_WORDS = [
-  "refugee family.",
-  "ration allotment.",
-  "offline checkpoint.",
-  "medical triage record.",
-  "displaced survivor.",
-];
+import { landingTranslations } from "../../data/landingTranslations";
 
 export function LandingPage() {
   const {
@@ -42,20 +35,23 @@ export function LandingPage() {
     toggleTheme,
   } = useVault();
 
+  const lt = landingTranslations[language] || landingTranslations.en;
+
   const [wordIndex, setWordIndex] = useState(0);
   const [wordFade, setWordFade] = useState(true);
 
   // Rotating words interval
   useEffect(() => {
+    const rotatingWords = lt.hero.rotatingWords;
     const interval = setInterval(() => {
       setWordFade(false);
       setTimeout(() => {
-        setWordIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
+        setWordIndex((prev) => (prev + 1) % rotatingWords.length);
         setWordFade(true);
       }, 350);
     }, 2600);
     return () => clearInterval(interval);
-  }, []);
+  }, [lt.hero.rotatingWords]);
 
   const handleCreateWallet = () => {
     setCurrentPage("create_wallet");
@@ -64,7 +60,6 @@ export function LandingPage() {
   const handleAccessWallet = () => {
     if (isVaultLocked) {
       setCurrentPage("overview");
-      // App.tsx will show the PIN entry screen
     } else {
       setCurrentPage("overview");
     }
@@ -76,6 +71,22 @@ export function LandingPage() {
       el.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const featureIcons = [
+    { icon: Shield, color: "text-lime", bg: "bg-lime/10" },
+    { icon: WifiOff, color: "text-skyblue", bg: "bg-skyblue/10" },
+    { icon: QrCode, color: "text-violet", bg: "bg-violet/10" },
+    { icon: Users, color: "text-amber", bg: "bg-amber/10" },
+    { icon: Link2, color: "text-lime", bg: "bg-lime/10" },
+    { icon: ShieldAlert, color: "text-danger", bg: "bg-danger/10" },
+  ];
+
+  const stepNumberColors = [
+    "text-lime/30",
+    "text-skyblue/30",
+    "text-violet/30",
+    "text-amber/30",
+  ];
 
   return (
     <div className="relative min-h-screen bg-graphite-950 text-ink-primary selection:bg-lime/20 selection:text-ink-primary font-sans">
@@ -120,7 +131,7 @@ export function LandingPage() {
                 SIH #26125
               </span>
             </div>
-            <p className="text-[11px] text-ink-muted -mt-0.5">Self-Sovereign Digital Identity</p>
+            <p className="text-[11px] text-ink-muted -mt-0.5">{lt.tagline}</p>
           </div>
         </a>
 
@@ -131,35 +142,35 @@ export function LandingPage() {
             onClick={() => scrollToSection("features")}
             className="transition-colors hover:text-ink-primary cursor-pointer"
           >
-            Capabilities
+            {lt.nav.capabilities}
           </button>
           <button
             type="button"
             onClick={() => scrollToSection("how")}
             className="transition-colors hover:text-ink-primary cursor-pointer"
           >
-            How it works
+            {lt.nav.howItWorks}
           </button>
           <button
             type="button"
             onClick={() => scrollToSection("pipeline")}
             className="transition-colors hover:text-ink-primary cursor-pointer"
           >
-            Protocol Flow
+            {lt.nav.protocolFlow}
           </button>
           <button
             type="button"
             onClick={() => scrollToSection("architecture")}
             className="transition-colors hover:text-ink-primary cursor-pointer"
           >
-            Architecture
+            {lt.nav.architecture}
           </button>
           <button
             type="button"
             onClick={() => scrollToSection("about")}
             className="transition-colors hover:text-ink-primary cursor-pointer"
           >
-            About
+            {lt.nav.about}
           </button>
         </div>
 
@@ -203,7 +214,7 @@ export function LandingPage() {
             className="flex items-center gap-1.5 rounded-lg border border-graphite-700 bg-graphite-900 px-3 py-2 text-xs font-semibold text-ink-primary hover:border-graphite-600 hover:bg-graphite-850 transition-all cursor-pointer"
           >
             <KeyRound className="h-3.5 w-3.5 text-ink-muted" />
-            <span>Access Wallet</span>
+            <span>{lt.nav.accessWallet}</span>
           </button>
 
           {/* Create a Wallet Button */}
@@ -213,7 +224,7 @@ export function LandingPage() {
             className="flex items-center gap-1.5 rounded-lg bg-lime px-3.5 py-2 text-xs font-semibold text-graphite-950 shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-transform cursor-pointer"
           >
             <Plus className="h-3.5 w-3.5" />
-            <span>Create a Wallet</span>
+            <span>{lt.nav.createWallet}</span>
           </button>
         </div>
       </nav>
@@ -223,37 +234,34 @@ export function LandingPage() {
         {/* Eyebrow badge */}
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-lime/30 bg-lime/10 px-3 py-1 font-mono text-xs text-lime">
           <span className="h-2 w-2 rounded-full bg-lime animate-pulse" />
-          <span>Self-Sovereign Identity · Offline Verifiable · W3C Standard</span>
+          <span>{lt.hero.badge}</span>
         </div>
 
         {/* Headline */}
         <h1 className="text-4xl font-extrabold tracking-tight text-ink-primary sm:text-6xl sm:leading-[1.1]">
-          The fastest path to
+          {lt.hero.headline1}
           <br />
-          trusted identity for
+          {lt.hero.headline2}
           <span className="block text-sm sm:text-base font-normal text-ink-muted mt-2 tracking-normal font-sans">
-            built by Team Serverless Syndicate · SIH Hackathon Project #26125
+            {lt.hero.teamCredit}
           </span>
         </h1>
 
         {/* Animated word line */}
         <div className="mt-3 flex items-center gap-3 text-3xl font-extrabold tracking-tight text-ink-primary sm:text-5xl">
-          <span className="text-ink-secondary">every</span>
+          <span className="text-ink-secondary">{lt.hero.every}</span>
           <span
             className={`transition-all duration-300 transform font-mono text-lime ${
               wordFade ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
             }`}
           >
-            {ROTATING_WORDS[wordIndex]}
+            {lt.hero.rotatingWords[wordIndex % lt.hero.rotatingWords.length]}
           </span>
         </div>
 
         {/* Subtitle */}
         <p className="mt-6 max-w-2xl text-base text-ink-secondary sm:text-lg leading-relaxed">
-          A decentralized, privacy-preserving digital identity vault purpose-built for displaced
-          populations, disaster relief, and refugee camps. Verifiable 100% offline via Zero-Knowledge
-          Proofs, anchored on Hyperledger Besu, and restorable through community guardians without
-          central authority risk.
+          {lt.hero.subtitle}
         </p>
 
         {/* Hero CTA Buttons */}
@@ -264,7 +272,7 @@ export function LandingPage() {
             className="flex items-center gap-2 rounded-xl bg-lime px-6 py-3.5 text-sm font-semibold text-graphite-950 shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
           >
             <Sparkles className="h-4 w-4" />
-            <span>Create a Wallet</span>
+            <span>{lt.hero.createBtn}</span>
             <ArrowRight className="h-4 w-4 ml-1" />
           </button>
 
@@ -274,7 +282,7 @@ export function LandingPage() {
             className="flex items-center gap-2 rounded-xl border border-graphite-700 bg-graphite-900/90 px-6 py-3.5 text-sm font-semibold text-ink-primary hover:border-graphite-600 hover:bg-graphite-850 transition-all cursor-pointer"
           >
             <Lock className="h-4 w-4 text-lime" />
-            <span>Access Wallet</span>
+            <span>{lt.hero.accessBtn}</span>
           </button>
         </div>
 
@@ -282,15 +290,15 @@ export function LandingPage() {
         <div className="mt-8 flex flex-wrap items-center gap-6 text-xs text-ink-muted font-mono">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 text-lime" />
-            <span>0 PII on-chain</span>
+            <span>{lt.hero.stats0Pii}</span>
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 text-lime" />
-            <span>Works 100% offline</span>
+            <span>{lt.hero.statsOffline}</span>
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 text-lime" />
-            <span>2-of-3 Shamir recovery</span>
+            <span>{lt.hero.statsShamir}</span>
           </div>
         </div>
       </div>
@@ -300,19 +308,19 @@ export function LandingPage() {
         <div className="mx-auto max-w-5xl grid grid-cols-2 gap-6 sm:grid-cols-4 text-center">
           <div>
             <div className="font-mono text-3xl sm:text-4xl font-bold text-lime">100%</div>
-            <div className="mt-1 text-xs text-ink-muted">Offline Verifiable Claims</div>
+            <div className="mt-1 text-xs text-ink-muted">{lt.stats.stat1Label}</div>
           </div>
           <div>
             <div className="font-mono text-3xl sm:text-4xl font-bold text-skyblue">2-of-3</div>
-            <div className="mt-1 text-xs text-ink-muted">Shamir Threshold Recovery</div>
+            <div className="mt-1 text-xs text-ink-muted">{lt.stats.stat2Label}</div>
           </div>
           <div>
             <div className="font-mono text-3xl sm:text-4xl font-bold text-violet">0 PII</div>
-            <div className="mt-1 text-xs text-ink-muted">Public Ledger Exposure</div>
+            <div className="mt-1 text-xs text-ink-muted">{lt.stats.stat3Label}</div>
           </div>
           <div>
             <div className="font-mono text-3xl sm:text-4xl font-bold text-amber">W3C</div>
-            <div className="mt-1 text-xs text-ink-muted">Verifiable Credential Spec</div>
+            <div className="mt-1 text-xs text-ink-muted">{lt.stats.stat4Label}</div>
           </div>
         </div>
       </section>
@@ -321,86 +329,40 @@ export function LandingPage() {
       <section id="features" className="relative z-10 mx-auto max-w-5xl px-4 py-20">
         <div className="text-center sm:text-left">
           <div className="font-mono text-xs font-semibold uppercase tracking-wider text-lime">
-            Capabilities
+            {lt.capabilities.eyebrow}
           </div>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">
-            Everything evidence-based,
+            {lt.capabilities.title1}
             <br />
-            zero surveillance.
+            {lt.capabilities.title2}
           </h2>
           <p className="mt-3 max-w-xl text-sm text-ink-secondary">
-            Every identity pass is encrypted in a device enclave. Cryptographic signatures confirm
-            validity without exposing biometric records or national ID databases to unauthorized
-            parties.
+            {lt.capabilities.desc}
           </p>
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Card 1 */}
-          <div className="rounded-2xl border border-graphite-700 bg-graphite-900/80 p-6 shadow-vault hover:border-graphite-600 transition-all group">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-lime/10 text-lime mb-4 group-hover:scale-105 transition-transform">
-              <Shield className="h-5 w-5" />
-            </div>
-            <h3 className="text-base font-semibold text-ink-primary">Decentralized DID Root</h3>
-            <p className="mt-2 text-xs leading-relaxed text-ink-secondary">
-              Generated locally on device using elliptic curve keys (<code className="text-lime">did:ethr</code>). No government registry or platform can freeze or revoke baseline existence.
-            </p>
-          </div>
-
-          {/* Card 2 */}
-          <div className="rounded-2xl border border-graphite-700 bg-graphite-900/80 p-6 shadow-vault hover:border-graphite-600 transition-all group">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-skyblue/10 text-skyblue mb-4 group-hover:scale-105 transition-transform">
-              <WifiOff className="h-5 w-5" />
-            </div>
-            <h3 className="text-base font-semibold text-ink-primary">100% Offline Verifier</h3>
-            <p className="mt-2 text-xs leading-relaxed text-ink-secondary">
-              Field relief officers scan optical QR or NFC tokens with zero internet. Signatures evaluate against locally cached issuer public keys.
-            </p>
-          </div>
-
-          {/* Card 3 */}
-          <div className="rounded-2xl border border-graphite-700 bg-graphite-900/80 p-6 shadow-vault hover:border-graphite-600 transition-all group">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet/10 text-violet mb-4 group-hover:scale-105 transition-transform">
-              <QrCode className="h-5 w-5" />
-            </div>
-            <h3 className="text-base font-semibold text-ink-primary">Zero-Knowledge Proofs</h3>
-            <p className="mt-2 text-xs leading-relaxed text-ink-secondary">
-              Prove qualifications (e.g. Adult status or Camp Sector membership) while keeping raw dates of birth, photos, and biometric signatures redacted.
-            </p>
-          </div>
-
-          {/* Card 4 */}
-          <div className="rounded-2xl border border-graphite-700 bg-graphite-900/80 p-6 shadow-vault hover:border-graphite-600 transition-all group">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber/10 text-amber mb-4 group-hover:scale-105 transition-transform">
-              <Users className="h-5 w-5" />
-            </div>
-            <h3 className="text-base font-semibold text-ink-primary">Shamir Social Recovery</h3>
-            <p className="mt-2 text-xs leading-relaxed text-ink-secondary">
-              Lost phone during flood evacuation? 2 of 3 trusted community guardians combine encrypted secret shards to reconstruct your master wallet on any device.
-            </p>
-          </div>
-
-          {/* Card 5 */}
-          <div className="rounded-2xl border border-graphite-700 bg-graphite-900/80 p-6 shadow-vault hover:border-graphite-600 transition-all group">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-lime/10 text-lime mb-4 group-hover:scale-105 transition-transform">
-              <Link2 className="h-5 w-5" />
-            </div>
-            <h3 className="text-base font-semibold text-ink-primary">On-Chain Anchoring</h3>
-            <p className="mt-2 text-xs leading-relaxed text-ink-secondary">
-              Relief authorities anchor cryptographic state roots on Hyperledger Besu. Provides immutable audit integrity without leaking personal data.
-            </p>
-          </div>
-
-          {/* Card 6 */}
-          <div className="rounded-2xl border border-graphite-700 bg-graphite-900/80 p-6 shadow-vault hover:border-graphite-600 transition-all group">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-danger/10 text-danger mb-4 group-hover:scale-105 transition-transform">
-              <ShieldAlert className="h-5 w-5" />
-            </div>
-            <h3 className="text-base font-semibold text-ink-primary">Duress Mode (Decoy Vault)</h3>
-            <p className="mt-2 text-xs leading-relaxed text-ink-secondary">
-              Under physical threat or hostile checkpoint scrutiny, entering safety PIN <code className="text-danger">9999</code> displays an authentic-looking decoy vault.
-            </p>
-          </div>
+          {lt.capabilities.cards.map((card, idx) => {
+            const Icon = featureIcons[idx]?.icon || Shield;
+            const colorClass = featureIcons[idx]?.color || "text-lime";
+            const bgClass = featureIcons[idx]?.bg || "bg-lime/10";
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl border border-graphite-700 bg-graphite-900/80 p-6 shadow-vault hover:border-graphite-600 transition-all group"
+              >
+                <div
+                  className={`flex h-11 w-11 items-center justify-center rounded-xl ${bgClass} ${colorClass} mb-4 group-hover:scale-105 transition-transform`}
+                >
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="text-base font-semibold text-ink-primary">{card.title}</h3>
+                <p className="mt-2 text-xs leading-relaxed text-ink-secondary">
+                  {card.desc}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -408,10 +370,10 @@ export function LandingPage() {
       <section id="pipeline" className="relative z-10 mx-auto max-w-5xl px-4 py-16">
         <div className="text-center">
           <div className="font-mono text-xs font-semibold uppercase tracking-wider text-lime">
-            Pipeline
+            {lt.pipeline.eyebrow}
           </div>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-ink-primary sm:text-4xl">
-            From enrollment to relief<br />distribution in seconds.
+            {lt.pipeline.title}
           </h2>
         </div>
 
@@ -423,7 +385,7 @@ export function LandingPage() {
                 <KeyRound className="h-7 w-7" />
               </div>
               <span className="mt-2 text-[11px] font-medium text-ink-secondary text-center">
-                1. Local DID
+                {lt.pipeline.steps[0]}
               </span>
             </div>
 
@@ -434,7 +396,7 @@ export function LandingPage() {
                 <Boxes className="h-7 w-7" />
               </div>
               <span className="mt-2 text-[11px] font-medium text-ink-secondary text-center">
-                2. Issue & Anchor
+                {lt.pipeline.steps[1]}
               </span>
             </div>
 
@@ -445,7 +407,7 @@ export function LandingPage() {
                 <QrCode className="h-7 w-7" />
               </div>
               <span className="mt-2 text-[11px] font-medium text-ink-secondary text-center">
-                3. ZK Proof Pass
+                {lt.pipeline.steps[2]}
               </span>
             </div>
 
@@ -456,7 +418,7 @@ export function LandingPage() {
                 <Scan className="h-7 w-7" />
               </div>
               <span className="mt-2 text-[11px] font-medium text-ink-secondary text-center">
-                4. Offline Scan
+                {lt.pipeline.steps[3]}
               </span>
             </div>
 
@@ -467,7 +429,7 @@ export function LandingPage() {
                 <CheckCircle2 className="h-7 w-7" />
               </div>
               <span className="mt-2 text-[11px] font-medium text-ink-secondary text-center">
-                5. Aid Granted
+                {lt.pipeline.steps[4]}
               </span>
             </div>
           </div>
@@ -475,37 +437,20 @@ export function LandingPage() {
 
         {/* 4 Step detail blocks */}
         <div id="how" className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="rounded-xl border border-graphite-700 bg-graphite-900/60 p-5">
-            <div className="font-mono text-3xl font-extrabold text-lime/30 mb-2">01</div>
-            <h4 className="text-sm font-semibold text-ink-primary">Enroll in Safe Enclave</h4>
-            <p className="mt-1 text-xs text-ink-secondary leading-relaxed">
-              The user registers without disclosing private data. Key pairs are stored inside on-device hardware security modules.
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-graphite-700 bg-graphite-900/60 p-5">
-            <div className="font-mono text-3xl font-extrabold text-skyblue/30 mb-2">02</div>
-            <h4 className="text-sm font-semibold text-ink-primary">Camp Authority Signs</h4>
-            <p className="mt-1 text-xs text-ink-secondary leading-relaxed">
-              Relief kiosk signs the ration quota and family link, anchoring state hash on-chain while handing the user decrypted credentials.
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-graphite-700 bg-graphite-900/60 p-5">
-            <div className="font-mono text-3xl font-extrabold text-violet/30 mb-2">03</div>
-            <h4 className="text-sm font-semibold text-ink-primary">Generate ZK Proof</h4>
-            <p className="mt-1 text-xs text-ink-secondary leading-relaxed">
-              The user presents a dynamic QR proof at distribution checkpoints. Only the needed claims (age, entitlement tier) are revealed.
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-graphite-700 bg-graphite-900/60 p-5">
-            <div className="font-mono text-3xl font-extrabold text-amber/30 mb-2">04</div>
-            <h4 className="text-sm font-semibold text-ink-primary">Offline Aid Granted</h4>
-            <p className="mt-1 text-xs text-ink-secondary leading-relaxed">
-              Field terminal validates signatures against local cached keys and dispenses rations instantly with 0 ms server delay.
-            </p>
-          </div>
+          {lt.pipeline.details.map((detail, idx) => {
+            const stepNumColor = stepNumberColors[idx] || "text-lime/30";
+            return (
+              <div key={idx} className="rounded-xl border border-graphite-700 bg-graphite-900/60 p-5">
+                <div className={`font-mono text-3xl font-extrabold ${stepNumColor} mb-2`}>
+                  {detail.step}
+                </div>
+                <h4 className="text-sm font-semibold text-ink-primary">{detail.title}</h4>
+                <p className="mt-1 text-xs text-ink-secondary leading-relaxed">
+                  {detail.desc}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -515,15 +460,15 @@ export function LandingPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-graphite-700/80 pb-6">
             <div>
               <div className="font-mono text-xs font-semibold uppercase tracking-wider text-lime">
-                Hackathon Scope &amp; Architecture
+                {lt.architecture.eyebrow}
               </div>
               <h3 className="mt-1 text-2xl font-bold text-ink-primary">
-                Smart India Hackathon #26125 Overview
+                {lt.architecture.title}
               </h3>
             </div>
             <div className="flex items-center gap-2">
               <span className="rounded-full border border-lime/30 bg-lime/10 px-3 py-1 font-mono text-xs text-lime">
-                Status: Field Demo Ready
+                {lt.architecture.status}
               </span>
             </div>
           </div>
@@ -531,25 +476,15 @@ export function LandingPage() {
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-ink-secondary leading-relaxed">
             <div>
               <h4 className="text-sm font-semibold text-ink-primary mb-2">
-                Problem Addressed:
+                {lt.architecture.problemTitle}
               </h4>
-              <p>
-                During severe climate floods, earthquakes, and forced population displacements,
-                survivors lose physical Aadhaar/voter cards and ration booklets. Centralized state
-                databases fail completely when cellular towers collapse, creating catastrophic
-                relief distribution bottlenecks or dangerous biometric surveillance vulnerabilities.
-              </p>
+              <p>{lt.architecture.problemDesc}</p>
             </div>
             <div>
               <h4 className="text-sm font-semibold text-ink-primary mb-2">
-                ResilienceID Technological Resolution:
+                {lt.architecture.solutionTitle}
               </h4>
-              <p>
-                ResilienceID decouples identity verification from connectivity. Using asymmetric
-                cryptography, Zero-Knowledge proofs, and permissioned Hyperledger Besu state roots,
-                displaced families retain verifiable identity rights and ration guarantees entirely
-                offline with zero risk of identity weaponization.
-              </p>
+              <p>{lt.architecture.solutionDesc}</p>
             </div>
           </div>
         </div>
@@ -563,18 +498,14 @@ export function LandingPage() {
           </div>
           <div>
             <div className="flex items-center gap-3">
-              <h3 className="text-xl font-bold text-ink-primary">Team Serverless Syndicate</h3>
+              <h3 className="text-xl font-bold text-ink-primary">{lt.about.team}</h3>
               <span className="rounded-md bg-graphite-800 border border-graphite-700 px-2 py-0.5 font-mono text-[10px] text-lime">
-                Lead Architect
+                {lt.about.role}
               </span>
             </div>
-            <p className="text-xs text-lime mt-0.5">SIH Hackathon 2024 · Problem Statement #26125</p>
+            <p className="text-xs text-lime mt-0.5">{lt.about.hackathon}</p>
             <p className="mt-3 text-xs leading-relaxed text-ink-secondary">
-              This solution was designed to ensure that displaced persons, refugees, and disaster
-              survivors never lose their fundamental legal rights or humanitarian entitlements due to
-              lost paper documents or disrupted telecommunications networks. Every module — from
-              on-chain merkle anchors to offline threshold key recovery — is implemented with zero-trust
-              cryptography to guarantee human dignity and privacy.
+              {lt.about.desc}
             </p>
           </div>
         </div>
@@ -584,12 +515,12 @@ export function LandingPage() {
       <section className="relative z-10 mx-auto max-w-5xl px-4 py-16">
         <div className="rounded-2xl border border-lime/30 bg-gradient-to-br from-graphite-900 to-graphite-950 p-8 sm:p-12 text-center shadow-vault">
           <h2 className="text-2xl sm:text-4xl font-extrabold text-ink-primary">
-            Empower displaced survivors with
+            {lt.cta.title1}
             <br />
-            self-sovereign dignity.
+            {lt.cta.title2}
           </h2>
           <p className="mt-3 max-w-md mx-auto text-sm text-ink-secondary">
-            Experience the live field-tested prototype on this device.
+            {lt.cta.desc}
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -599,7 +530,7 @@ export function LandingPage() {
               className="flex items-center gap-2 rounded-xl bg-lime px-6 py-3.5 text-sm font-semibold text-graphite-950 shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
             >
               <Plus className="h-4 w-4" />
-              <span>Create a Wallet</span>
+              <span>{lt.cta.createBtn}</span>
             </button>
 
             <button
@@ -608,7 +539,7 @@ export function LandingPage() {
               className="flex items-center gap-2 rounded-xl border border-graphite-700 bg-graphite-850 px-6 py-3.5 text-sm font-semibold text-ink-primary hover:border-graphite-600 hover:bg-graphite-800 transition-all cursor-pointer"
             >
               <KeyRound className="h-4 w-4 text-lime" />
-              <span>Access Wallet</span>
+              <span>{lt.cta.accessBtn}</span>
             </button>
           </div>
         </div>
@@ -622,14 +553,14 @@ export function LandingPage() {
           className="inline-flex items-center gap-2 rounded-xl border border-graphite-700 bg-graphite-900 px-4 py-2 text-xs font-semibold text-ink-secondary hover:text-ink-primary hover:border-graphite-600 transition-all cursor-pointer"
         >
           <ArrowUp className="h-3.5 w-3.5" />
-          <span>Back to top</span>
+          <span>{lt.footer.backToTop}</span>
         </button>
 
         <div className="mt-6 text-xs text-ink-muted">
-          Built by <strong className="text-ink-secondary">Team Serverless Syndicate</strong> · ResilienceID · SIH #26125
+          {lt.footer.builtBy}
           <br />
           <span className="mt-1 block text-[11px] text-ink-muted/80">
-            Self-Sovereign Digital Identity for Displaced Populations · Smart India Hackathon
+            {lt.footer.subtext}
           </span>
         </div>
       </footer>
