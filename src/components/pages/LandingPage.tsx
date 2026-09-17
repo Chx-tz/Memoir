@@ -35,9 +35,7 @@ const ROTATING_WORDS = [
 export function LandingPage() {
   const {
     setCurrentPage,
-    unlockVault,
     isVaultLocked,
-    pushToast,
     language,
     setLanguage,
     theme,

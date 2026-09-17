@@ -53,6 +53,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "Family & Guardians",
         verifier: "Aid Distribution Station",
         activity: "Recent Updates",
+        create_wallet: "Create Wallet",
       },
       header: {
         duressActive: "Safety Shield Active",
@@ -100,6 +101,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "Threshold Social Recovery",
         verifier: "Offline ZK Verifier Terminal",
         activity: "Cryptographic Tamper Log",
+        create_wallet: "Create Wallet",
       },
       header: {
         duressActive: "Duress Mode (Decoy Vault)",
@@ -149,6 +151,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "കുടുംബവും സഹായികളും",
         verifier: "റിലീഫ് കൗണ്ടർ സ്കാനർ",
         activity: "സമീപകാല വിവരങ്ങൾ",
+        create_wallet: "Create Wallet",
       },
       header: {
         duressActive: "സുരക്ഷാ മോഡ് സജീവം",
@@ -196,6 +199,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "ഷാമിർ ത്രെഷോൾഡ് റിക്കവറി",
         verifier: "ഓഫ്‌ലൈൻ ZK വെരിഫയർ",
         activity: "ക്രിപ്റ്റോഗ്രാഫിക് ഓഡിറ്റ് ലോഗ്",
+        create_wallet: "Create Wallet",
       },
       header: {
         duressActive: "ഡ്യൂറസ് മോഡ് സജീവം",
@@ -245,6 +249,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "अभिभावक और परिवार",
         verifier: "राहत वितरण काउंटर",
         activity: "हाल की गतिविधि",
+        create_wallet: "Create Wallet",
       },
       header: {
         duressActive: "सुरक्षा शील्ड सक्रिय",
@@ -292,6 +297,7 @@ export const translations: Record<Language, { human: TranslationDictionary; audi
         recovery: "शमीर सोशल रिकवरी",
         verifier: "ऑफ़लाइन ZK सत्यापन टर्मिनल",
         activity: "ऑडिट इवेंट लॉग",
+        create_wallet: "Create Wallet",
       },
       header: {
         duressActive: "ड्यूरेस मोड (नकली वॉलेट)",
