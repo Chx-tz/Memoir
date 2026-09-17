@@ -236,7 +236,7 @@ export function LandingPage() {
           <br />
           trusted identity for
           <span className="block text-sm sm:text-base font-normal text-ink-muted mt-2 tracking-normal font-sans">
-            built by Antony Thomas & Team · SIH Hackathon Project #26125
+            built by Team Serverless Syndicate · SIH Hackathon Project #26125
           </span>
         </h1>
 
@@ -563,11 +563,11 @@ export function LandingPage() {
       <section id="about" className="relative z-10 mx-auto max-w-5xl px-4 py-12">
         <div className="rounded-2xl border border-graphite-700 bg-graphite-900 p-6 sm:p-8 shadow-vault flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet to-lime font-mono text-2xl font-bold text-graphite-950 shadow-glow">
-            AT
+            SS
           </div>
           <div>
             <div className="flex items-center gap-3">
-              <h3 className="text-xl font-bold text-ink-primary">Antony Thomas &amp; Team</h3>
+              <h3 className="text-xl font-bold text-ink-primary">Team Serverless Syndicate</h3>
               <span className="rounded-md bg-graphite-800 border border-graphite-700 px-2 py-0.5 font-mono text-[10px] text-lime">
                 Lead Architect
               </span>
@@ -630,7 +630,7 @@ export function LandingPage() {
         </button>
 
         <div className="mt-6 text-xs text-ink-muted">
-          Built by <strong className="text-ink-secondary">Antony Thomas &amp; Team</strong> · ResilienceID · SIH #26125
+          Built by <strong className="text-ink-secondary">Team Serverless Syndicate</strong> · ResilienceID · SIH #26125
           <br />
           <span className="mt-1 block text-[11px] text-ink-muted/80">
             Self-Sovereign Digital Identity for Displaced Populations · Smart India Hackathon
