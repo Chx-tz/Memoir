@@ -27,6 +27,27 @@ import type {
 } from "../types";
 import { getTranslation, type TranslationDictionary } from "../data/translations";
 
+interface UserData {
+  phone: string;
+  pin: string;
+  documents: VaultDocument[];
+  activity: ActivityEntry[];
+  guardians: Guardian[];
+}
+
+const getUsers = (): Record<string, UserData> => {
+  try {
+    const raw = localStorage.getItem("resilienceIdUsers");
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+};
+
+const saveUsers = (users: Record<string, UserData>) => {
+  localStorage.setItem("resilienceIdUsers", JSON.stringify(users));
+};
+
 interface VaultContextValue {
   currentPage: PageId;
   setCurrentPage: (page: PageId) => void;
@@ -49,7 +70,9 @@ interface VaultContextValue {
 
   isVaultLocked: boolean;
   isDuressMode: boolean;
-  unlockVault: (pin: string) => void;
+  activePhone: string | null;
+  createWallet: (phone: string, pin: string) => void;
+  unlockVault: (phone: string, pin: string) => void;
   lockVault: () => void;
   toggleVaultLock: () => void;
 
@@ -123,6 +146,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   
   const [isVaultLocked, setIsVaultLocked] = useState(true);
   const [isDuressMode, setIsDuressMode] = useState(false);
+  const [activePhone, setActivePhone] = useState<string | null>(null);
 
   const [documentSearch, setDocumentSearch] = useState("");
   const [activeDocuments, setActiveDocuments] = useState<VaultDocument[]>(initialDocuments);
@@ -143,6 +167,22 @@ export function VaultProvider({ children }: { children: ReactNode }) {
 
   const [activity, setActivity] = useState<ActivityEntry[]>(initialActivity);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  // Sync state to local storage for the active user
+  useEffect(() => {
+    if (activePhone) {
+      const users = getUsers();
+      if (users[activePhone]) {
+        users[activePhone] = {
+          ...users[activePhone],
+          documents: activeDocuments,
+          activity,
+          guardians,
+        };
+        saveUsers(users);
+      }
+    }
+  }, [activePhone, activeDocuments, activity, guardians]);
 
   const pushToast = useCallback(
     (message: string, variant: ToastVariant = "info") => {
@@ -178,32 +218,64 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const openMobileNav = useCallback(() => setIsMobileNavOpen(true), []);
   const closeMobileNav = useCallback(() => setIsMobileNavOpen(false), []);
 
-  const unlockVault = useCallback((pin: string) => {
+  const createWallet = useCallback((phone: string, pin: string) => {
+    const users = getUsers();
+    if (users[phone]) {
+      throw new Error("Phone number already registered.");
+    }
+    const newUser: UserData = {
+      phone,
+      pin,
+      documents: initialDocuments,
+      activity: initialActivity,
+      guardians: initialGuardians,
+    };
+    users[phone] = newUser;
+    saveUsers(users);
+
+    setActivePhone(phone);
+    setActiveDocuments(newUser.documents);
+    setActivity(newUser.activity);
+    setGuardians(newUser.guardians);
+    setIsDuressMode(false);
+    setIsVaultLocked(false);
+  }, []);
+
+  const unlockVault = useCallback((phone: string, pin: string) => {
+    const users = getUsers();
+    const user = users[phone];
+
     if (pin === "9999") { // Duress PIN
       setIsDuressMode(true);
       setIsVaultLocked(false);
       pushToast("Vault unlocked in restricted mode", "warning");
       logActivity("Duress PIN entered • Decoy vault loaded", "warning");
-    } else if (pin === "1234") { // Real PIN
+    } else if (user && user.pin === pin) {
+      setActivePhone(phone);
+      setActiveDocuments(user.documents);
+      setActivity(user.activity);
+      setGuardians(user.guardians);
+      
       setIsDuressMode(false);
       setIsVaultLocked(false);
       pushToast("ResilienceID Vault unlocked", "success");
       logActivity("Vault unlocked successfully", "success");
     } else {
-      pushToast("Incorrect PIN. Please try again.", "warning");
+      pushToast("Incorrect Phone Number or PIN. Please try again.", "warning");
     }
   }, [pushToast, logActivity]);
 
   const lockVault = useCallback(() => {
     setIsVaultLocked(true);
     setIsDuressMode(false);
+    setActivePhone(null);
     pushToast("Vault locked securely", "warning");
     logActivity("Vault locked manually", "warning");
   }, [pushToast, logActivity]);
 
   const toggleVaultLock = useCallback(() => {
     if (isVaultLocked) {
-      unlockVault("1234");
+      unlockVault("", ""); // Handled by VaultLockedScreen UI mostly
     } else {
       lockVault();
     }
@@ -324,6 +396,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
       t,
       isVaultLocked,
       isDuressMode,
+      activePhone,
+      createWallet,
       unlockVault,
       lockVault,
       toggleVaultLock,
@@ -369,6 +443,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
       t,
       isVaultLocked,
       isDuressMode,
+      activePhone,
+      createWallet,
       unlockVault,
       lockVault,
       toggleVaultLock,

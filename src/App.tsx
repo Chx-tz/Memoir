@@ -8,6 +8,7 @@ import { Overview } from "./components/pages/Overview";
 import { SocialRecovery } from "./components/pages/SocialRecovery";
 import { VerifierMode } from "./components/pages/VerifierMode";
 import { LandingPage } from "./components/pages/LandingPage";
+import { CreateWallet } from "./components/pages/CreateWallet";
 import { ToastContainer } from "./components/shared/ToastContainer";
 import { GenerateProofModal } from "./components/documents/GenerateProofModal";
 import { AnchorModal } from "./components/documents/AnchorModal";
@@ -15,6 +16,10 @@ import { IssueCredentialModal } from "./components/documents/IssueCredentialModa
 
 function PageContent() {
   const { currentPage, isVaultLocked } = useVault();
+
+  if (currentPage === "create_wallet") {
+    return <CreateWallet />;
+  }
 
   if (isVaultLocked) {
     return <VaultLockedScreen />;
@@ -45,6 +50,15 @@ function Shell() {
     return (
       <div className="min-h-screen bg-graphite-950">
         <LandingPage />
+        <ToastContainer />
+      </div>
+    );
+  }
+
+  if (currentPage === "create_wallet") {
+    return (
+      <div className="min-h-screen bg-graphite-950">
+        <CreateWallet />
         <ToastContainer />
       </div>
     );

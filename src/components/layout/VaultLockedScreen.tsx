@@ -4,6 +4,7 @@ import { useVault } from "../../context/VaultContext";
 
 export function VaultLockedScreen() {
   const { unlockVault, t, uiMode } = useVault();
+  const [phone, setPhone] = useState("");
   const [pin, setPin] = useState("");
 
   const handleKeyPress = (key: string) => {
@@ -11,7 +12,7 @@ export function VaultLockedScreen() {
       const newPin = pin + key;
       setPin(newPin);
       if (newPin.length === 4) {
-        unlockVault(newPin);
+        unlockVault(phone, newPin);
         setPin(""); // reset for next time or if wrong
       }
     }
@@ -27,11 +28,21 @@ export function VaultLockedScreen() {
         <Lock className="h-7 w-7 text-amber" aria-hidden="true" />
       </div>
       <h1 className="mt-6 text-xl font-semibold text-ink-primary">{t.appName}</h1>
-      <p className="mt-2 text-sm text-ink-secondary">
-        {uiMode === "human" ? "Enter your 4-digit security PIN" : "Enter Master PIN to decrypt local enclave"}
+      <p className="mt-2 text-sm text-ink-secondary mb-6">
+        {uiMode === "human" ? "Enter your phone number and 4-digit security PIN" : "Enter Phone and PIN to decrypt local enclave"}
       </p>
-      
-      <div className="mt-8 flex gap-3">
+
+      <div className="w-full max-w-xs mb-8">
+        <input
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+          placeholder="Phone Number"
+          className="w-full rounded-lg border border-graphite-700 bg-graphite-800 px-4 py-3 text-ink-primary placeholder:text-graphite-500 focus:border-lime focus:outline-none focus:ring-1 focus:ring-lime text-center"
+        />
+      </div>
+
+      <div className="flex gap-3">
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}

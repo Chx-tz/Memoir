@@ -60,9 +60,7 @@ export function LandingPage() {
   }, []);
 
   const handleCreateWallet = () => {
-    unlockVault("1234");
-    setCurrentPage("overview");
-    pushToast("✨ New Sovereign Identity Enclave initialized (did:ethr:0x4f3e...9a01)", "success");
+    setCurrentPage("create_wallet");
   };
 
   const handleAccessWallet = () => {
