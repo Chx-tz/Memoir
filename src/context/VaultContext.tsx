@@ -69,6 +69,32 @@ const saveUsers = (users: Record<string, UserData>) => {
   localStorage.setItem("resilienceIdUsers", JSON.stringify(users));
 };
 
+interface SessionData {
+  activePhone: string | null;
+  isVaultLocked: boolean;
+  currentPage: PageId;
+  isDuressMode: boolean;
+}
+
+const getSavedSession = (): SessionData => {
+  try {
+    const raw = localStorage.getItem("resilienceIdSession");
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return {
+    activePhone: null,
+    isVaultLocked: true,
+    currentPage: "landing",
+    isDuressMode: false,
+  };
+};
+
+const saveSession = (session: SessionData) => {
+  try {
+    localStorage.setItem("resilienceIdSession", JSON.stringify(session));
+  } catch {}
+};
+
 interface VaultContextValue {
   currentPage: PageId;
   setCurrentPage: (page: PageId) => void;
@@ -148,7 +174,23 @@ let toastCounter = 0;
 let activityCounter = 0;
 
 export function VaultProvider({ children }: { children: ReactNode }) {
-  const [currentPage, setCurrentPage] = useState<PageId>("landing");
+  const [savedSession] = useState(() => getSavedSession());
+  const [initialUserData] = useState(() => {
+    if (savedSession.activePhone && !savedSession.isVaultLocked) {
+      const users = getUsers();
+      return users[savedSession.activePhone] || null;
+    }
+    return null;
+  });
+
+  const [currentPage, setCurrentPage] = useState<PageId>(() => {
+    if (savedSession.activePhone && !savedSession.isVaultLocked) {
+      return savedSession.currentPage === "landing" || savedSession.currentPage === "create_wallet"
+        ? "overview"
+        : savedSession.currentPage;
+    }
+    return "landing";
+  });
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const [uiMode, setUiMode] = useState<UiMode>("human");
@@ -173,12 +215,20 @@ export function VaultProvider({ children }: { children: ReactNode }) {
 
   const t = useMemo(() => getTranslation(language, uiMode), [language, uiMode]);
   
-  const [isVaultLocked, setIsVaultLocked] = useState(true);
-  const [isDuressMode, setIsDuressMode] = useState(false);
-  const [activePhone, setActivePhone] = useState<string | null>(null);
+  const [isVaultLocked, setIsVaultLocked] = useState<boolean>(() =>
+    savedSession.activePhone ? savedSession.isVaultLocked : true
+  );
+  const [isDuressMode, setIsDuressMode] = useState<boolean>(() =>
+    savedSession.activePhone ? savedSession.isDuressMode : false
+  );
+  const [activePhone, setActivePhone] = useState<string | null>(() =>
+    savedSession.activePhone && !savedSession.isVaultLocked ? savedSession.activePhone : null
+  );
 
   const [documentSearch, setDocumentSearch] = useState("");
-  const [activeDocuments, setActiveDocuments] = useState<VaultDocument[]>([]);
+  const [activeDocuments, setActiveDocuments] = useState<VaultDocument[]>(
+    () => initialUserData?.documents || []
+  );
 
   const [isProofModalOpen, setIsProofModalOpen] = useState(false);
   const [proofDocumentId, setProofDocumentId] = useState<string | null>(null);
@@ -190,16 +240,34 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const [issuePrefillType, setIssuePrefillType] = useState<string | undefined>(undefined);
 
   // Social Recovery Simulation
-  const [guardians, setGuardians] = useState<Guardian[]>([]);
+  const [guardians, setGuardians] = useState<Guardian[]>(
+    () => initialUserData?.guardians || []
+  );
   const [isRecoverySimulating, setIsRecoverySimulating] = useState(false);
   const [approvedGuardianIds, setApprovedGuardianIds] = useState<string[]>([]);
 
   // Profile & Nominees
-  const [profile, setProfile] = useState<UserProfile>({ displayName: "", avatarData: null });
-  const [nominees, setNominees] = useState<Nominee[]>([]);
+  const [profile, setProfile] = useState<UserProfile>(
+    () => initialUserData?.profile || { displayName: "", avatarData: null }
+  );
+  const [nominees, setNominees] = useState<Nominee[]>(
+    () => initialUserData?.nominees || []
+  );
 
-  const [activity, setActivity] = useState<ActivityEntry[]>([]);
+  const [activity, setActivity] = useState<ActivityEntry[]>(
+    () => initialUserData?.activity || []
+  );
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  // Sync active session state to local storage so refreshes retain active account & current page
+  useEffect(() => {
+    saveSession({
+      activePhone,
+      isVaultLocked,
+      currentPage,
+      isDuressMode,
+    });
+  }, [activePhone, isVaultLocked, currentPage, isDuressMode]);
 
   // Sync state to local storage for the active user
   useEffect(() => {
@@ -286,6 +354,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     setNominees(newUser.nominees);
     setIsDuressMode(false);
     setIsVaultLocked(false);
+    setCurrentPage("overview");
   }, []);
 
   const unlockVault = useCallback((phone: string, pin: string) => {
@@ -293,6 +362,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     if (pin === "9999") {
       setIsDuressMode(true);
       setIsVaultLocked(false);
+      setCurrentPage("overview");
       pushToast("Vault unlocked in restricted mode", "warning");
       logActivity("Duress PIN entered • Decoy vault loaded", "warning");
       return;
@@ -316,6 +386,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
 
       setIsDuressMode(false);
       setIsVaultLocked(false);
+      setCurrentPage("overview");
       pushToast("Demo Vault unlocked (Evaluator Mode)", "success");
       logActivity("Demo dummy vault unlocked with PIN 1234", "success");
       return;
@@ -333,6 +404,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
 
       setIsDuressMode(false);
       setIsVaultLocked(false);
+      setCurrentPage("overview");
       pushToast("ResilienceID Vault unlocked", "success");
       logActivity("Vault unlocked successfully", "success");
     } else {
@@ -344,6 +416,13 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     setIsVaultLocked(true);
     setIsDuressMode(false);
     setActivePhone(null);
+    setCurrentPage("landing");
+    saveSession({
+      activePhone: null,
+      isVaultLocked: true,
+      currentPage: "landing",
+      isDuressMode: false,
+    });
     pushToast("Vault locked securely", "warning");
     logActivity("Vault locked manually", "warning");
   }, [pushToast, logActivity]);
