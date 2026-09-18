@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useVault } from "../../context/VaultContext";
 
 export function VaultLockedScreen() {
-  const { unlockVault, t, uiMode } = useVault();
+  const { unlockVault, setCurrentPage, t, uiMode } = useVault();
   const [phone, setPhone] = useState("");
   const [pin, setPin] = useState("");
 
@@ -23,7 +23,14 @@ export function VaultLockedScreen() {
   };
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center">
+    <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center relative">
+      <button
+        type="button"
+        onClick={() => setCurrentPage("landing")}
+        className="absolute top-6 left-6 flex items-center gap-1.5 text-xs text-ink-muted hover:text-lime transition-colors cursor-pointer"
+      >
+        ← Return to Landing Page
+      </button>
       <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-amber/30 bg-amber/10">
         <Lock className="h-7 w-7 text-amber" aria-hidden="true" />
       </div>

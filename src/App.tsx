@@ -47,7 +47,7 @@ function PageContent() {
 }
 
 function Shell() {
-  const { currentPage } = useVault();
+  const { currentPage, isVaultLocked } = useVault();
 
   if (currentPage === "landing") {
     return (
@@ -62,6 +62,15 @@ function Shell() {
     return (
       <div className="min-h-screen bg-graphite-950">
         <CreateWallet />
+        <ToastContainer />
+      </div>
+    );
+  }
+
+  if (isVaultLocked) {
+    return (
+      <div className="min-h-screen bg-graphite-950 flex flex-col justify-center relative">
+        <VaultLockedScreen />
         <ToastContainer />
       </div>
     );
