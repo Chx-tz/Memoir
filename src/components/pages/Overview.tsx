@@ -55,11 +55,27 @@ export function Overview() {
             {t.overview.manageAll}
           </button>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {documents.map((doc) => (
-            <DocumentCard key={doc.id} document={doc} />
-          ))}
-        </div>
+        {documents.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {documents.map((doc) => (
+              <DocumentCard key={doc.id} document={doc} />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-graphite-700 bg-graphite-900/40 p-8 text-center">
+            <FileStack className="h-8 w-8 text-ink-muted mx-auto mb-2" />
+            <p className="text-sm font-medium text-ink-primary">No credentials issued yet</p>
+            <p className="text-xs text-ink-secondary mt-1">Get your first camp pass or identity record to start using the wallet.</p>
+            <button
+              type="button"
+              onClick={() => openIssueModal()}
+              className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-lime px-3.5 py-2 text-xs font-semibold text-graphite-950 shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-transform"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>{t.overview.issueBtn}</span>
+            </button>
+          </div>
+        )}
       </section>
 
       <section className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_1.2fr]">

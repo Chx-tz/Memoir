@@ -10,9 +10,14 @@ export function VerifierMode() {
   const [verificationResult, setVerificationResult] = useState<"none" | "verified">("none");
   const [aidDispensed, setAidDispensed] = useState(false);
 
-  const selectedDoc = documents.find((d) => d.id === selectedDocId) || documents[0];
+  const verifiedDocs = documents.filter((d) => d.status === "verified");
+  const selectedDoc = documents.find((d) => d.id === selectedDocId) || verifiedDocs[0] || documents[0];
 
   const handleSimulateScan = () => {
+    if (!selectedDoc) {
+      pushToast("No credentials available in this wallet to verify. Issue a credential first.", "warning");
+      return;
+    }
     setIsScanning(true);
     setVerificationResult("none");
     setAidDispensed(false);
@@ -80,11 +85,15 @@ export function VerifierMode() {
               }}
               className="w-full rounded-xl border border-graphite-700 bg-graphite-900 py-2.5 px-3 text-sm text-ink-primary mb-5"
             >
-              {documents.filter(d => d.status === "verified").map((doc) => (
-                <option key={doc.id} value={doc.id}>
-                  {doc.title} ({doc.subtitle})
-                </option>
-              ))}
+              {verifiedDocs.length > 0 ? (
+                verifiedDocs.map((doc) => (
+                  <option key={doc.id} value={doc.id}>
+                    {doc.title} ({doc.subtitle})
+                  </option>
+                ))
+              ) : (
+                <option value="">No verified credentials in this wallet</option>
+              )}
             </select>
 
             <div className="relative rounded-xl border-2 border-dashed border-graphite-600 bg-graphite-900/60 p-8 text-center flex flex-col items-center justify-center min-h-[200px]">
@@ -109,9 +118,9 @@ export function VerifierMode() {
 
           <button
             type="button"
-            disabled={isScanning}
+            disabled={isScanning || !selectedDoc}
             onClick={handleSimulateScan}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-lime py-3 text-sm font-medium text-graphite-950 shadow-glow transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-lime py-3 text-sm font-semibold text-graphite-950 shadow-glow transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
           >
             <Scan className="h-4 w-4" />
             {isScanning ? "Verifying..." : "Scan & Verify Proof"}

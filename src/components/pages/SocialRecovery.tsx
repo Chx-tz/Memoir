@@ -128,64 +128,74 @@ export function SocialRecovery() {
             </div>
             <div>
               <h2 className="text-base font-medium text-ink-primary">Designated Guardians</h2>
-              <p className="text-xs text-ink-muted">Threshold: 2 of {guardians.length} guardians</p>
+              <p className="text-xs text-ink-muted">
+                {guardians.length > 0
+                  ? `Threshold: 2 of ${guardians.length} guardians`
+                  : "Threshold: Minimum 2 trusted guardians required"}
+              </p>
             </div>
           </div>
           <span className="text-xs font-mono text-lime bg-lime/10 px-2.5 py-1 rounded-full border border-lime/20">
-            Shamir 2-of-{guardians.length} Active
+            {guardians.length > 0 ? `Shamir 2-of-${guardians.length} Active` : "No Guardians Set"}
           </span>
         </div>
         
-        <div className="mt-6 flex flex-col gap-3">
-          {guardians.map((guardian) => {
-            const isApproved = approvedGuardianIds.includes(guardian.id);
+        {guardians.length > 0 ? (
+          <div className="mt-6 flex flex-col gap-3">
+            {guardians.map((guardian) => {
+              const isApproved = approvedGuardianIds.includes(guardian.id);
 
-            return (
-              <div
-                key={guardian.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-graphite-700/50 pb-3 last:border-0 last:pb-0"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-graphite-800 border border-graphite-700">
-                    <Users className="h-4 w-4 text-ink-secondary" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-ink-primary">{guardian.name}</p>
-                      <span className="text-[10px] font-mono text-ink-muted">
-                        {guardian.phoneOrContact || "+91 98470 •••••"}
-                      </span>
+              return (
+                <div
+                  key={guardian.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-graphite-700/50 pb-3 last:border-0 last:pb-0"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-graphite-800 border border-graphite-700">
+                      <Users className="h-4 w-4 text-ink-secondary" />
                     </div>
-                    <p className="text-xs text-ink-muted">{guardian.role}</p>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-ink-primary">{guardian.name}</p>
+                        <span className="text-[10px] font-mono text-ink-muted">
+                          {guardian.phoneOrContact || "+91 98470 •••••"}
+                        </span>
+                      </div>
+                      <p className="text-xs text-ink-muted">{guardian.role}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 self-end sm:self-auto">
+                    {isRecoverySimulating ? (
+                      isApproved ? (
+                        <span className="flex items-center gap-1.5 rounded-lg border border-lime/40 bg-lime/10 px-3 py-1.5 text-xs font-medium text-lime">
+                          <CheckCircle2 className="h-3.5 w-3.5" />
+                          Approved
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => approveRecoveryGuardian(guardian.id)}
+                          className="rounded-lg border border-amber/40 bg-amber/10 px-3 py-1.5 text-xs font-medium text-amber hover:bg-amber/20 transition-colors"
+                        >
+                          {t.common.simulateApproval}
+                        </button>
+                      )
+                    ) : (
+                      <span className="text-xs font-medium px-2.5 py-1 rounded-md bg-lime/10 text-lime">
+                        Active
+                      </span>
+                    )}
                   </div>
                 </div>
-
-                <div className="flex items-center gap-2 self-end sm:self-auto">
-                  {isRecoverySimulating ? (
-                    isApproved ? (
-                      <span className="flex items-center gap-1.5 rounded-lg border border-lime/40 bg-lime/10 px-3 py-1.5 text-xs font-medium text-lime">
-                        <CheckCircle2 className="h-3.5 w-3.5" />
-                        Approved
-                      </span>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => approveRecoveryGuardian(guardian.id)}
-                        className="rounded-lg border border-amber/40 bg-amber/10 px-3 py-1.5 text-xs font-medium text-amber hover:bg-amber/20 transition-colors"
-                      >
-                        {t.common.simulateApproval}
-                      </button>
-                    )
-                  ) : (
-                    <span className="text-xs font-medium px-2.5 py-1 rounded-md bg-lime/10 text-lime">
-                      Active
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="mt-6 rounded-xl border border-dashed border-graphite-700 bg-graphite-900/40 p-6 text-center text-xs text-ink-secondary">
+            No recovery guardians added to this account yet. Add at least 2 trusted community members (e.g. NGO doctor, camp elder, sister) to enable 2-of-3 threshold recovery in case of lost device.
+          </div>
+        )}
 
         <button
           type="button"

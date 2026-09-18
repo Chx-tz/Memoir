@@ -53,7 +53,19 @@ export function Documents() {
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-graphite-600 py-16 text-center">
-          <p className="text-sm text-ink-secondary">No credentials match "{documentSearch}".</p>
+          <p className="text-sm text-ink-secondary">
+            {documentSearch ? `No credentials match "${documentSearch}".` : "No credentials stored in this wallet yet."}
+          </p>
+          {!documentSearch && (
+            <button
+              type="button"
+              onClick={() => openIssueModal()}
+              className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-lime px-4 py-2 text-xs font-semibold text-graphite-950 shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-transform"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>{t.common.requestIssuance}</span>
+            </button>
+          )}
         </div>
       )}
 

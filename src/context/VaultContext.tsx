@@ -35,12 +35,27 @@ interface UserData {
   guardians: Guardian[];
 }
 
+export const DEMO_PHONE = "1234567890";
+
+const DEMO_ACCOUNT: UserData = {
+  phone: DEMO_PHONE,
+  pin: "1234",
+  documents: initialDocuments,
+  activity: initialActivity,
+  guardians: initialGuardians,
+};
+
 const getUsers = (): Record<string, UserData> => {
   try {
     const raw = localStorage.getItem("resilienceIdUsers");
-    return raw ? JSON.parse(raw) : {};
+    const users: Record<string, UserData> = raw ? JSON.parse(raw) : {};
+    // Ensure the demo dummy account always exists with demo resources
+    if (!users[DEMO_PHONE]) {
+      users[DEMO_PHONE] = DEMO_ACCOUNT;
+    }
+    return users;
   } catch {
-    return {};
+    return { [DEMO_PHONE]: DEMO_ACCOUNT };
   }
 };
 
@@ -220,15 +235,23 @@ export function VaultProvider({ children }: { children: ReactNode }) {
 
   const createWallet = useCallback((phone: string, pin: string) => {
     const users = getUsers();
-    if (users[phone]) {
+    if (users[phone] && phone !== DEMO_PHONE) {
       throw new Error("Phone number already registered.");
     }
     const newUser: UserData = {
       phone,
       pin,
-      documents: initialDocuments,
-      activity: initialActivity,
-      guardians: initialGuardians,
+      documents: [],
+      activity: [
+        {
+          id: `act-${Date.now()}`,
+          action: "Wallet Created & Sovereign DID Initialized",
+          device: "This device • Current session",
+          timestamp: "Just now",
+          status: "success",
+        },
+      ],
+      guardians: [],
     };
     users[phone] = newUser;
     saveUsers(users);
@@ -242,20 +265,44 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const unlockVault = useCallback((phone: string, pin: string) => {
-    const users = getUsers();
-    const user = users[phone];
-
-    if (pin === "9999") { // Duress PIN
+    // 1. Duress PIN (Safety Decoy Mode)
+    if (pin === "9999") {
       setIsDuressMode(true);
       setIsVaultLocked(false);
       pushToast("Vault unlocked in restricted mode", "warning");
       logActivity("Duress PIN entered • Decoy vault loaded", "warning");
-    } else if (user && user.pin === pin) {
+      return;
+    }
+
+    const users = getUsers();
+
+    // 2. Demo Dummy Account (PIN 1234 with empty phone, 1234, demo, or DEMO_PHONE)
+    const isDemoLogin =
+      pin === "1234" &&
+      (!phone || phone === "1234" || phone === DEMO_PHONE || phone === "demo");
+
+    if (isDemoLogin) {
+      const demoData = users[DEMO_PHONE] || DEMO_ACCOUNT;
+      setActivePhone(DEMO_PHONE);
+      setActiveDocuments(demoData.documents);
+      setActivity(demoData.activity);
+      setGuardians(demoData.guardians);
+
+      setIsDuressMode(false);
+      setIsVaultLocked(false);
+      pushToast("Demo Vault unlocked (Evaluator Mode)", "success");
+      logActivity("Demo dummy vault unlocked with PIN 1234", "success");
+      return;
+    }
+
+    // 3. Normal User Account
+    const user = users[phone];
+    if (user && user.pin === pin) {
       setActivePhone(phone);
-      setActiveDocuments(user.documents);
-      setActivity(user.activity);
-      setGuardians(user.guardians);
-      
+      setActiveDocuments(user.documents || []);
+      setActivity(user.activity || []);
+      setGuardians(user.guardians || []);
+
       setIsDuressMode(false);
       setIsVaultLocked(false);
       pushToast("ResilienceID Vault unlocked", "success");
