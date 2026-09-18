@@ -47,18 +47,18 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
       <button
         type="button"
         onClick={() => {
-          setCurrentPage("landing");
+          setCurrentPage("overview");
           onNavigate?.();
         }}
         className="flex items-center gap-3 px-6 pt-7 text-left group transition-transform hover:opacity-95 cursor-pointer"
-        title="Return to Project Landing Page"
+        title="Go to Overview Dashboard"
       >
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-graphite-800 text-lime border border-graphite-700 group-hover:scale-105 transition-transform">
           <ShieldHalf className="h-5 w-5 text-lime" aria-hidden="true" />
         </div>
         <div>
           <p className="text-sm font-semibold tracking-tight text-ink-primary group-hover:text-lime transition-colors">{t.appName}</p>
-          <p className="text-xs text-ink-muted">← Project Landing</p>
+          <p className="text-xs text-ink-muted">Sovereign Vault</p>
         </div>
       </button>
 

@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   ArrowUp,
@@ -29,6 +29,7 @@ export function LandingPage() {
   const {
     setCurrentPage,
     isVaultLocked,
+    lockVault,
     language,
     setLanguage,
     theme,
@@ -207,25 +208,47 @@ export function LandingPage() {
             )}
           </button>
 
-          {/* Access Wallet Button */}
-          <button
-            type="button"
-            onClick={handleAccessWallet}
-            className="flex items-center gap-1.5 rounded-lg border border-graphite-700 bg-graphite-900 px-3 py-2 text-xs font-semibold text-ink-primary hover:border-graphite-600 hover:bg-graphite-850 transition-all cursor-pointer"
-          >
-            <KeyRound className="h-3.5 w-3.5 text-ink-muted" />
-            <span>{lt.nav.accessWallet}</span>
-          </button>
-
-          {/* Create a Wallet Button */}
-          <button
-            type="button"
-            onClick={handleCreateWallet}
-            className="flex items-center gap-1.5 rounded-lg bg-lime px-3.5 py-2 text-xs font-semibold text-graphite-950 shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-transform cursor-pointer"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            <span>{lt.nav.createWallet}</span>
-          </button>
+          {/* Access / Active Vault Actions */}
+          {!isVaultLocked ? (
+            <>
+              <button
+                type="button"
+                onClick={handleAccessWallet}
+                className="flex items-center gap-1.5 rounded-lg bg-lime px-3.5 py-2 text-xs font-semibold text-graphite-950 shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-transform cursor-pointer"
+              >
+                <Shield className="h-3.5 w-3.5" />
+                <span>Open Active Vault</span>
+              </button>
+              <button
+                type="button"
+                onClick={lockVault}
+                className="flex items-center gap-1.5 rounded-lg border border-graphite-700 bg-graphite-900 px-3 py-2 text-xs font-semibold text-ink-primary hover:border-red-500/50 hover:text-red-400 transition-all cursor-pointer"
+                title="Lock Vault & Sign Out"
+              >
+                <Lock className="h-3.5 w-3.5 text-ink-muted" />
+                <span className="hidden sm:inline">Lock Vault</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={handleAccessWallet}
+                className="flex items-center gap-1.5 rounded-lg border border-graphite-700 bg-graphite-900 px-3 py-2 text-xs font-semibold text-ink-primary hover:border-graphite-600 hover:bg-graphite-850 transition-all cursor-pointer"
+              >
+                <KeyRound className="h-3.5 w-3.5 text-ink-muted" />
+                <span>{lt.nav.accessWallet}</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleCreateWallet}
+                className="flex items-center gap-1.5 rounded-lg bg-lime px-3.5 py-2 text-xs font-semibold text-graphite-950 shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-transform cursor-pointer"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                <span>{lt.nav.createWallet}</span>
+              </button>
+            </>
+          )}
         </div>
       </nav>
 
