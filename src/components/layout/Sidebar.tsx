@@ -1,4 +1,4 @@
-import { FileStack, History, LayoutGrid, Scan, ShieldHalf, UserCircle, Users, X } from "lucide-react";
+import { FileStack, History, LayoutGrid, Scan, ShieldHalf, User, UserCircle, Users, X } from "lucide-react";
 import { useVault } from "../../context/VaultContext";
 import type { PageId } from "../../types";
 
@@ -40,9 +40,7 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
         .toUpperCase()
     : isDemo
     ? "AR"
-    : activePhone
-    ? activePhone.slice(0, 2)
-    : "ID";
+    : null;
 
   return (
     <div className="flex h-full flex-col">
@@ -112,9 +110,13 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
             alt="avatar"
             className="h-9 w-9 rounded-full object-cover"
           />
-        ) : (
+        ) : initials ? (
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary">
             {initials}
+          </div>
+        ) : (
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 text-ink-primary">
+            <User className="h-4 w-4 text-ink-secondary" />
           </div>
         )}
         <div className="min-w-0">

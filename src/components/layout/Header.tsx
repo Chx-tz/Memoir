@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, Code2, Globe, HeartHandshake, Lock, Menu, Moon, ShieldAlert, Sun } from "lucide-react";
+import { Bell, ChevronDown, Code2, Globe, HeartHandshake, Lock, Menu, Moon, ShieldAlert, Sun, User } from "lucide-react";
 import { useVault } from "../../context/VaultContext";
 import type { Language } from "../../types";
 
@@ -17,6 +17,7 @@ export function Header() {
     toggleTheme,
     pushToast,
     activePhone,
+    profile,
     t,
   } = useVault();
 
@@ -145,9 +146,27 @@ export function Header() {
         </button>
 
         {/* Avatar */}
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary" title={activePhone ? `User +91 ${activePhone}` : "Sovereign Vault"}>
-          {activePhone === "1234567890" || activePhone === "1234" ? "AR" : activePhone ? activePhone.slice(0, 2) : "ID"}
-        </div>
+        <button
+          type="button"
+          onClick={() => setCurrentPage("profile")}
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary hover:ring-2 hover:ring-lime transition-all overflow-hidden"
+          title="Open Profile & Settings"
+        >
+          {profile?.avatarData ? (
+            <img src={profile.avatarData} alt="avatar" className="h-full w-full object-cover" />
+          ) : profile?.displayName ? (
+            profile.displayName
+              .split(" ")
+              .map((w) => w[0])
+              .join("")
+              .slice(0, 2)
+              .toUpperCase()
+          ) : activePhone === "1234567890" || activePhone === "1234" ? (
+            "AR"
+          ) : (
+            <User className="h-4 w-4 text-ink-secondary" />
+          )}
+        </button>
       </div>
     </header>
   );
