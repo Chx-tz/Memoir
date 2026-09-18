@@ -427,6 +427,17 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     logActivity("Vault locked manually", "warning");
   }, [pushToast, logActivity]);
 
+  const changePage = useCallback(
+    (page: PageId) => {
+      if (page === "landing") {
+        lockVault();
+      } else {
+        setCurrentPage(page);
+      }
+    },
+    [lockVault],
+  );
+
   const toggleVaultLock = useCallback(() => {
     if (isVaultLocked) {
       unlockVault("", ""); // Handled by VaultLockedScreen UI mostly
@@ -577,7 +588,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const value = useMemo<VaultContextValue>(
     () => ({
       currentPage,
-      setCurrentPage,
+      setCurrentPage: changePage,
       isMobileNavOpen,
       openMobileNav,
       closeMobileNav,

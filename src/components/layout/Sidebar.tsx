@@ -16,7 +16,7 @@ interface SidebarContentProps {
 }
 
 function SidebarContent({ onNavigate }: SidebarContentProps) {
-  const { currentPage, setCurrentPage, t, activePhone, profile } = useVault();
+  const { currentPage, setCurrentPage, lockVault, t, activePhone, profile } = useVault();
 
   const isDemo = activePhone === "1234567890" || activePhone === "1234";
   const displayName = profile.displayName
@@ -47,18 +47,18 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
       <button
         type="button"
         onClick={() => {
-          setCurrentPage("overview");
+          lockVault();
           onNavigate?.();
         }}
         className="flex items-center gap-3 px-6 pt-7 text-left group transition-transform hover:opacity-95 cursor-pointer"
-        title="Go to Overview Dashboard"
+        title="Lock Vault & Return to Landing Page"
       >
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-graphite-800 text-lime border border-graphite-700 group-hover:scale-105 transition-transform">
           <ShieldHalf className="h-5 w-5 text-lime" aria-hidden="true" />
         </div>
         <div>
           <p className="text-sm font-semibold tracking-tight text-ink-primary group-hover:text-lime transition-colors">{t.appName}</p>
-          <p className="text-xs text-ink-muted">Sovereign Vault</p>
+          <p className="text-xs text-ink-muted">← Project Landing</p>
         </div>
       </button>
 
