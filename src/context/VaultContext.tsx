@@ -164,10 +164,10 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const [activePhone, setActivePhone] = useState<string | null>(null);
 
   const [documentSearch, setDocumentSearch] = useState("");
-  const [activeDocuments, setActiveDocuments] = useState<VaultDocument[]>(initialDocuments);
+  const [activeDocuments, setActiveDocuments] = useState<VaultDocument[]>([]);
 
   const [isProofModalOpen, setIsProofModalOpen] = useState(false);
-  const [proofDocumentId, setProofDocumentId] = useState<string | null>("doc-relief");
+  const [proofDocumentId, setProofDocumentId] = useState<string | null>(null);
 
   const [isAnchorModalOpen, setIsAnchorModalOpen] = useState(false);
   const [anchorDocumentId, setAnchorDocumentId] = useState<string | null>(null);
@@ -176,11 +176,11 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const [issuePrefillType, setIssuePrefillType] = useState<string | undefined>(undefined);
 
   // Social Recovery Simulation
-  const [guardians, setGuardians] = useState<Guardian[]>(initialGuardians);
+  const [guardians, setGuardians] = useState<Guardian[]>([]);
   const [isRecoverySimulating, setIsRecoverySimulating] = useState(false);
   const [approvedGuardianIds, setApprovedGuardianIds] = useState<string[]>([]);
 
-  const [activity, setActivity] = useState<ActivityEntry[]>(initialActivity);
+  const [activity, setActivity] = useState<ActivityEntry[]>([]);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
   // Sync state to local storage for the active user

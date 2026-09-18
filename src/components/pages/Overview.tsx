@@ -92,9 +92,15 @@ export function Overview() {
             </button>
           </div>
           <div className="mt-2">
-            {activity.slice(0, 4).map((entry) => (
-              <ActivityItem key={entry.id} entry={entry} />
-            ))}
+            {activity.length > 0 ? (
+              activity.slice(0, 4).map((entry) => (
+                <ActivityItem key={entry.id} entry={entry} />
+              ))
+            ) : (
+              <p className="py-6 text-center text-xs text-ink-muted">
+                No recent activity recorded yet.
+              </p>
+            )}
           </div>
         </div>
       </section>

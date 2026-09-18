@@ -8,7 +8,9 @@ export type DocumentType =
   | "relief-registration" 
   | "health-record" 
   | "family-registry" 
-  | "ration-card";
+  | "ration-card"
+  | "national-id"
+  | "other-certificate";
 
 export type DocumentStatus = "verified" | "empty";
 
@@ -30,6 +32,10 @@ export interface VaultDocument {
   updatedAt: string | null;
   claims?: Record<string, string>;
   anchor?: OnChainAnchor;
+  fileData?: string;
+  fileName?: string;
+  fileSize?: string;
+  fileType?: string;
 }
 
 export type GuardianStatus = "active" | "pending" | "unavailable";

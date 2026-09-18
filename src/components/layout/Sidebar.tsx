@@ -15,7 +15,20 @@ interface SidebarContentProps {
 }
 
 function SidebarContent({ onNavigate }: SidebarContentProps) {
-  const { currentPage, setCurrentPage, t } = useVault();
+  const { currentPage, setCurrentPage, t, activePhone } = useVault();
+
+  const isDemo = activePhone === "1234567890" || activePhone === "1234";
+  const displayName = isDemo
+    ? "Demo (Arjun Ravi)"
+    : activePhone
+    ? `User +91 ${activePhone}`
+    : "Sovereign Vault";
+  const displayDid = isDemo
+    ? "did:ethr:0x4f3e...9a01"
+    : activePhone
+    ? `did:ethr:0x${activePhone.slice(-4)}...${activePhone.slice(0, 4)}`
+    : "did:ethr:local-enclave";
+  const initials = isDemo ? "AR" : activePhone ? activePhone.slice(0, 2) : "ID";
 
   return (
     <div className="flex h-full flex-col">
@@ -75,11 +88,11 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
 
       <div className="flex items-center gap-3 border-t border-graphite-700 px-6 py-4">
         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary">
-          AR
+          {initials}
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm text-ink-primary">Arjun Ravi</p>
-          <p className="truncate text-xs text-ink-muted">did:ethr:0x4f...</p>
+          <p className="truncate text-sm text-ink-primary">{displayName}</p>
+          <p className="truncate text-xs text-ink-muted">{displayDid}</p>
         </div>
       </div>
     </div>

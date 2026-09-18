@@ -16,6 +16,7 @@ export function Header() {
     theme,
     toggleTheme,
     pushToast,
+    activePhone,
     t,
   } = useVault();
 
@@ -144,8 +145,8 @@ export function Header() {
         </button>
 
         {/* Avatar */}
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary">
-          AR
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary" title={activePhone ? `User +91 ${activePhone}` : "Sovereign Vault"}>
+          {activePhone === "1234567890" || activePhone === "1234" ? "AR" : activePhone ? activePhone.slice(0, 2) : "ID"}
         </div>
       </div>
     </header>
