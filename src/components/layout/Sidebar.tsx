@@ -1,4 +1,4 @@
-import { FileStack, History, LayoutGrid, Scan, ShieldHalf, Users, X } from "lucide-react";
+import { FileStack, History, LayoutGrid, Scan, ShieldHalf, UserCircle, Users, X } from "lucide-react";
 import { useVault } from "../../context/VaultContext";
 import type { PageId } from "../../types";
 
@@ -8,6 +8,7 @@ const navItems: { id: PageId; label: string; icon: typeof LayoutGrid }[] = [
   { id: "recovery", label: "Guardians & Recovery", icon: Users },
   { id: "verifier", label: "Aid Station Verifier", icon: Scan },
   { id: "activity", label: "Activity log", icon: History },
+  { id: "profile", label: "Profile & Settings", icon: UserCircle },
 ];
 
 interface SidebarContentProps {
@@ -15,11 +16,13 @@ interface SidebarContentProps {
 }
 
 function SidebarContent({ onNavigate }: SidebarContentProps) {
-  const { currentPage, setCurrentPage, t, activePhone } = useVault();
+  const { currentPage, setCurrentPage, t, activePhone, profile } = useVault();
 
   const isDemo = activePhone === "1234567890" || activePhone === "1234";
-  const displayName = isDemo
-    ? "Demo (Arjun Ravi)"
+  const displayName = profile.displayName
+    ? profile.displayName
+    : isDemo
+    ? "Arjun Ravi (Demo)"
     : activePhone
     ? `User +91 ${activePhone}`
     : "Sovereign Vault";
@@ -28,7 +31,18 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
     : activePhone
     ? `did:ethr:0x${activePhone.slice(-4)}...${activePhone.slice(0, 4)}`
     : "did:ethr:local-enclave";
-  const initials = isDemo ? "AR" : activePhone ? activePhone.slice(0, 2) : "ID";
+  const initials = profile.displayName
+    ? profile.displayName
+        .split(" ")
+        .map((w) => w[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : isDemo
+    ? "AR"
+    : activePhone
+    ? activePhone.slice(0, 2)
+    : "ID";
 
   return (
     <div className="flex h-full flex-col">
@@ -86,15 +100,28 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 border-t border-graphite-700 px-6 py-4">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary">
-          {initials}
-        </div>
+      <button
+        type="button"
+        onClick={() => { setCurrentPage("profile"); onNavigate?.(); }}
+        className="flex items-center gap-3 border-t border-graphite-700 px-6 py-4 w-full text-left hover:bg-graphite-800/50 transition-colors"
+        title="Open Profile & Settings"
+      >
+        {profile.avatarData ? (
+          <img
+            src={profile.avatarData}
+            alt="avatar"
+            className="h-9 w-9 rounded-full object-cover"
+          />
+        ) : (
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-graphite-700 font-mono text-xs text-ink-primary">
+            {initials}
+          </div>
+        )}
         <div className="min-w-0">
           <p className="truncate text-sm text-ink-primary">{displayName}</p>
           <p className="truncate text-xs text-ink-muted">{displayDid}</p>
         </div>
-      </div>
+      </button>
     </div>
   );
 }

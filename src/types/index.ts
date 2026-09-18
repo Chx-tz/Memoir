@@ -1,4 +1,4 @@
-export type PageId = "landing" | "overview" | "documents" | "recovery" | "verifier" | "activity" | "create_wallet";
+export type PageId = "landing" | "overview" | "documents" | "recovery" | "verifier" | "activity" | "create_wallet" | "profile";
 
 export type UiMode = "human" | "auditor";
 export type Language = "en" | "ml" | "hi";
@@ -64,4 +64,16 @@ export interface ToastMessage {
   id: string;
   message: string;
   variant: ToastVariant;
+}
+
+export interface Nominee {
+  id: string;
+  name: string;
+  relation: string;
+  phone: string;
+}
+
+export interface UserProfile {
+  displayName: string;
+  avatarData: string | null;
 }

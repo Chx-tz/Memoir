@@ -5,6 +5,7 @@ import { VaultLockedScreen } from "./components/layout/VaultLockedScreen";
 import { ActivityLog } from "./components/pages/ActivityLog";
 import { Documents } from "./components/pages/Documents";
 import { Overview } from "./components/pages/Overview";
+import { Profile } from "./components/pages/Profile";
 import { SocialRecovery } from "./components/pages/SocialRecovery";
 import { VerifierMode } from "./components/pages/VerifierMode";
 import { LandingPage } from "./components/pages/LandingPage";
@@ -38,6 +39,8 @@ function PageContent() {
       return <VerifierMode />;
     case "activity":
       return <ActivityLog />;
+    case "profile":
+      return <Profile />;
     default:
       return <Overview />;
   }

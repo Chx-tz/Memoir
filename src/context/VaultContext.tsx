@@ -18,11 +18,13 @@ import type {
   ActivityStatus,
   Guardian,
   Language,
+  Nominee,
   PageId,
   ThemeMode,
   ToastMessage,
   ToastVariant,
   UiMode,
+  UserProfile,
   VaultDocument,
 } from "../types";
 import { getTranslation, type TranslationDictionary } from "../data/translations";
@@ -33,6 +35,8 @@ interface UserData {
   documents: VaultDocument[];
   activity: ActivityEntry[];
   guardians: Guardian[];
+  profile: UserProfile;
+  nominees: Nominee[];
 }
 
 export const DEMO_PHONE = "1234567890";
@@ -43,6 +47,8 @@ const DEMO_ACCOUNT: UserData = {
   documents: initialDocuments,
   activity: initialActivity,
   guardians: initialGuardians,
+  profile: { displayName: "Arjun Ravi (Demo)", avatarData: null },
+  nominees: [],
 };
 
 const getUsers = (): Record<string, UserData> => {
@@ -126,6 +132,14 @@ interface VaultContextValue {
   toasts: ToastMessage[];
   pushToast: (message: string, variant?: ToastVariant) => void;
   dismissToast: (id: string) => void;
+
+  // Profile & Account Settings
+  profile: UserProfile;
+  updateProfile: (patch: Partial<UserProfile>) => void;
+  nominees: Nominee[];
+  addNominee: (nominee: Omit<Nominee, "id">) => void;
+  removeNominee: (id: string) => void;
+  changePin: (oldPin: string, newPin: string) => boolean;
 }
 
 const VaultContext = createContext<VaultContextValue | null>(null);
@@ -180,6 +194,10 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const [isRecoverySimulating, setIsRecoverySimulating] = useState(false);
   const [approvedGuardianIds, setApprovedGuardianIds] = useState<string[]>([]);
 
+  // Profile & Nominees
+  const [profile, setProfile] = useState<UserProfile>({ displayName: "", avatarData: null });
+  const [nominees, setNominees] = useState<Nominee[]>([]);
+
   const [activity, setActivity] = useState<ActivityEntry[]>([]);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
@@ -193,11 +211,13 @@ export function VaultProvider({ children }: { children: ReactNode }) {
           documents: activeDocuments,
           activity,
           guardians,
+          profile,
+          nominees,
         };
         saveUsers(users);
       }
     }
-  }, [activePhone, activeDocuments, activity, guardians]);
+  }, [activePhone, activeDocuments, activity, guardians, profile, nominees]);
 
   const pushToast = useCallback(
     (message: string, variant: ToastVariant = "info") => {
@@ -252,6 +272,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
         },
       ],
       guardians: [],
+      profile: { displayName: "", avatarData: null },
+      nominees: [],
     };
     users[phone] = newUser;
     saveUsers(users);
@@ -260,6 +282,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     setActiveDocuments(newUser.documents);
     setActivity(newUser.activity);
     setGuardians(newUser.guardians);
+    setProfile(newUser.profile);
+    setNominees(newUser.nominees);
     setIsDuressMode(false);
     setIsVaultLocked(false);
   }, []);
@@ -287,6 +311,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
       setActiveDocuments(demoData.documents);
       setActivity(demoData.activity);
       setGuardians(demoData.guardians);
+      setProfile(demoData.profile || { displayName: "Arjun Ravi (Demo)", avatarData: null });
+      setNominees(demoData.nominees || []);
 
       setIsDuressMode(false);
       setIsVaultLocked(false);
@@ -302,6 +328,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
       setActiveDocuments(user.documents || []);
       setActivity(user.activity || []);
       setGuardians(user.guardians || []);
+      setProfile(user.profile || { displayName: "", avatarData: null });
+      setNominees(user.nominees || []);
 
       setIsDuressMode(false);
       setIsVaultLocked(false);
@@ -392,6 +420,48 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     [pushToast, logActivity],
   );
 
+  const updateProfile = useCallback((patch: Partial<UserProfile>) => {
+    setProfile((prev) => ({ ...prev, ...patch }));
+    pushToast("Profile updated", "success");
+    logActivity("Profile settings updated", "info");
+  }, [pushToast, logActivity]);
+
+  const addNominee = useCallback(
+    (n: Omit<Nominee, "id">) => {
+      const newNominee: Nominee = { ...n, id: `nom-${Date.now()}` };
+      setNominees((prev) => [...prev, newNominee]);
+      pushToast(`Nominee added: ${n.name}`, "success");
+      logActivity(`Emergency nominee registered: ${n.name}`, "info");
+    },
+    [pushToast, logActivity],
+  );
+
+  const removeNominee = useCallback(
+    (id: string) => {
+      setNominees((prev) => prev.filter((n) => n.id !== id));
+      pushToast("Nominee removed", "info");
+    },
+    [pushToast],
+  );
+
+  const changePin = useCallback(
+    (oldPin: string, newPin: string): boolean => {
+      if (!activePhone) return false;
+      const users = getUsers();
+      const user = users[activePhone];
+      if (!user || user.pin !== oldPin) {
+        pushToast("Incorrect current PIN", "warning");
+        return false;
+      }
+      users[activePhone] = { ...user, pin: newPin };
+      saveUsers(users);
+      pushToast("PIN changed successfully", "success");
+      logActivity("Vault PIN changed", "success");
+      return true;
+    },
+    [activePhone, pushToast, logActivity],
+  );
+
   const startRecoverySimulation = useCallback(() => {
     setIsRecoverySimulating(true);
     setApprovedGuardianIds([]);
@@ -476,6 +546,12 @@ export function VaultProvider({ children }: { children: ReactNode }) {
       toasts,
       pushToast,
       dismissToast,
+      profile,
+      updateProfile,
+      nominees,
+      addNominee,
+      removeNominee,
+      changePin,
     }),
     [
       currentPage,
@@ -522,6 +598,12 @@ export function VaultProvider({ children }: { children: ReactNode }) {
       toasts,
       pushToast,
       dismissToast,
+      profile,
+      updateProfile,
+      nominees,
+      addNominee,
+      removeNominee,
+      changePin,
     ],
   );
 
