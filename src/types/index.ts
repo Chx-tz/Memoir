@@ -77,3 +77,20 @@ export interface UserProfile {
   displayName: string;
   avatarData: string | null;
 }
+
+export interface ChatAction {
+  label: string;
+  targetPage?: PageId;
+  modalToOpen?: "issue" | "proof" | "anchor";
+  customHandler?: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  sender: "user" | "assistant" | "system";
+  text: string;
+  timestamp: string;
+  actions?: ChatAction[];
+  isThinking?: boolean;
+}
+

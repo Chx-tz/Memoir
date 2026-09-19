@@ -1,4 +1,5 @@
 import { VaultProvider, useVault } from "./context/VaultContext";
+import { ChatProvider } from "./context/ChatContext";
 import { Header } from "./components/layout/Header";
 import { DesktopSidebar, MobileSidebar } from "./components/layout/Sidebar";
 import { VaultLockedScreen } from "./components/layout/VaultLockedScreen";
@@ -14,6 +15,8 @@ import { ToastContainer } from "./components/shared/ToastContainer";
 import { GenerateProofModal } from "./components/documents/GenerateProofModal";
 import { AnchorModal } from "./components/documents/AnchorModal";
 import { IssueCredentialModal } from "./components/documents/IssueCredentialModal";
+import { ChatFloatingWidget } from "./components/chat/ChatFloatingWidget";
+import { ChatWindowCard } from "./components/chat/ChatWindowCard";
 
 function PageContent() {
   const { currentPage, isVaultLocked } = useVault();
@@ -51,18 +54,22 @@ function Shell() {
 
   if (currentPage === "landing") {
     return (
-      <div className="min-h-screen bg-graphite-950">
+      <div className="min-h-screen bg-graphite-950 relative">
         <LandingPage />
         <ToastContainer />
+        <ChatWindowCard />
+        <ChatFloatingWidget />
       </div>
     );
   }
 
   if (currentPage === "create_wallet") {
     return (
-      <div className="min-h-screen bg-graphite-950">
+      <div className="min-h-screen bg-graphite-950 relative">
         <CreateWallet />
         <ToastContainer />
+        <ChatWindowCard />
+        <ChatFloatingWidget />
       </div>
     );
   }
@@ -72,12 +79,14 @@ function Shell() {
       <div className="min-h-screen bg-graphite-950 flex flex-col justify-center relative">
         <VaultLockedScreen />
         <ToastContainer />
+        <ChatWindowCard />
+        <ChatFloatingWidget />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-graphite-950">
+    <div className="flex min-h-screen bg-graphite-950 relative">
       <DesktopSidebar />
       <MobileSidebar />
       <div className="flex min-h-screen flex-1 flex-col">
@@ -92,6 +101,8 @@ function Shell() {
       <AnchorModal />
       <IssueCredentialModal />
       <ToastContainer />
+      <ChatWindowCard />
+      <ChatFloatingWidget />
     </div>
   );
 }
@@ -99,7 +110,9 @@ function Shell() {
 export default function App() {
   return (
     <VaultProvider>
-      <Shell />
+      <ChatProvider>
+        <Shell />
+      </ChatProvider>
     </VaultProvider>
   );
 }

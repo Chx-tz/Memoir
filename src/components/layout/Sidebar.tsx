@@ -88,6 +88,7 @@ function SidebarContent({ onNavigate }: SidebarContentProps) {
         })}
       </nav>
 
+
       <div className="mx-4 mb-4 rounded-xl border border-graphite-700 bg-graphite-800/60 p-4">
         <div className="flex items-center justify-between">
           <p className="text-xs text-ink-secondary">{t.common.offlineBadge}</p>
